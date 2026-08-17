@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://example.com/lumen/sitemap-default.xml
-Sitemap: https://example.com/lumen/sitemap-index.xml
+Sitemap: https://kainio.github.io/test-lumen-website/sitemap-default.xml
+Sitemap: https://kainio.github.io/test-lumen-website/sitemap-index.xml

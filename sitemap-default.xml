@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://example.com/lumen/</loc>
+    <loc>https://kainio.github.io/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
   <url>
-    <loc>https://example.com/lumen/about/</loc>
+    <loc>https://kainio.github.io/about/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
   <url>
-    <loc>https://example.com/lumen/contact/</loc>
+    <loc>https://kainio.github.io/contact/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
   <url>
-    <loc>https://example.com/lumen/404-page/</loc>
+    <loc>https://kainio.github.io/404-page/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
   <url>
-    <loc>https://example.com/lumen/checkout/</loc>
+    <loc>https://kainio.github.io/checkout/</loc>
     <lastmod>2026-08-17</lastmod>
   </url>
 </urlset>
