@@ -1,0 +1,226 @@
+---
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../index.css'; // Ensure our styles can override if needed
+
+interface Props {
+    language?: string;
+}
+
+const { language = 'en' } = Astro.props;
+
+// Read Vite defined Google Analytics configuration
+// @ts-ignore
+const gaConfig = typeof GOOGLE_ANALYTICS_CONFIG !== 'undefined' ? GOOGLE_ANALYTICS_CONFIG : { enabled: false, measurementId: '' };
+const gaEnabled = gaConfig.enabled && !!gaConfig.measurementId;
+const gaId = gaConfig.measurementId;
+
+// Determine language/concept slug prefix from Astro.url.pathname to respect multi-lingual convention
+const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+let cleanPath = pathname;
+if (base && cleanPath.startsWith(base)) {
+    cleanPath = cleanPath.slice(base.length);
+}
+cleanPath = cleanPath.replace(/^\//, "");
+const segments = cleanPath.split("/");
+const firstSegment = segments[0];
+
+// Define known localized concept slugs
+const knownLanguages = ['fr', 'es', 'ar'];
+const conceptPrefix = knownLanguages.includes(firstSegment) ? `/${firstSegment}` : "";
+
+// Construct absolute paths for Privacy Policy and Terms & Conditions
+const baseUrlNormalized = import.meta.env.BASE_URL.replace(/\/$/, "");
+const privacyUrl = `${baseUrlNormalized}${conceptPrefix}/legal/privacy-notice`;
+const termsUrl = `${baseUrlNormalized}${conceptPrefix}/legal/terms-of-use`;
+---
+
+<div 
+    id="cookie-consent-config" 
+    data-language={language}
+    data-ga-enabled={String(gaEnabled)}
+    data-ga-id={gaId}
+    data-privacy-url={privacyUrl}
+    data-terms-url={termsUrl}
+></div>
+
+<script>
+    import * as CookieConsent from 'vanilla-cookieconsent';
+    import { config } from '../services/cookieconsent-config';
+
+    // Expose CookieConsent globally so React components can call it
+    (window as any).CookieConsent = CookieConsent;
+
+    const container = document.getElementById('cookie-consent-config');
+    const language = container?.dataset.language || 'en';
+    const gaEnabled = container?.dataset.gaEnabled === 'true';
+    const gaId = container?.dataset.gaId || '';
+    const privacyUrl = container?.dataset.privacyUrl || '#';
+    const termsUrl = container?.dataset.termsUrl || '#';
+
+    // Initialize cookie consent configuration
+    const consentConfig: any = {
+        ...config,
+        language: {
+            ...config.language,
+            default: language
+        }
+    };
+
+    // Replace URL placeholders in footer/descriptions for all translations
+    if (consentConfig.language && consentConfig.language.translations) {
+        for (const lang of Object.keys(consentConfig.language.translations)) {
+            const translation = consentConfig.language.translations[lang];
+            
+            // Update consentModal footer
+            if (translation?.consentModal?.footer) {
+                translation.consentModal.footer = translation.consentModal.footer
+                    .replace(/\{\{privacy_url\}\}/g, privacyUrl)
+                    .replace(/\{\{terms_url\}\}/g, termsUrl);
+            }
+            
+            // Update preferencesModal sections
+            if (translation?.preferencesModal?.sections) {
+                for (const section of translation.preferencesModal.sections) {
+                    if (section.description) {
+                        section.description = section.description
+                            .replace(/\{\{privacy_url\}\}/g, privacyUrl)
+                            .replace(/\{\{terms_url\}\}/g, termsUrl);
+                    }
+                }
+            }
+        }
+    }
+
+    if (gaEnabled && gaId) {
+        // Initialize GA and Consent Mode v2
+        const initGA = (categories: string[]) => {
+            // @ts-ignore
+            window.dataLayer = window.dataLayer || [];
+            // @ts-ignore
+            window.gtag = window.gtag || function() {
+                // @ts-ignore
+                window.dataLayer.push(arguments);
+            };
+
+            // 1. Initialize consent defaults if not already done
+            // @ts-ignore
+            if (!window.gtagInit) {
+                // @ts-ignore
+                window.gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+                // @ts-ignore
+                window.gtag('js', new Date());
+                // @ts-ignore
+                window.gtagInit = true;
+            }
+
+            // 2. Set the GA opt-out flag based on analytics consent
+            // @ts-ignore
+            window['ga-disable-' + gaId] = !categories.includes('analytics');
+
+            // 3. Update Consent states based on accepted categories
+            const consentUpdate = {
+                'analytics_storage': categories.includes('analytics') ? 'granted' : 'denied',
+                'ad_storage': categories.includes('ads') ? 'granted' : 'denied',
+                'ad_user_data': categories.includes('ads') ? 'granted' : 'denied',
+                'ad_personalization': categories.includes('ads') ? 'granted' : 'denied'
+            };
+            // @ts-ignore
+            window.gtag('consent', 'update', consentUpdate);
+
+            // 4. Inject Google Tag Manager / GA4 script tag via Partytown
+            if (categories.includes('analytics') && !document.getElementById('cc-ga-script')) {
+                const script = document.createElement('script');
+                // @ts-ignore
+                script.type = import.meta.env.PROD ? 'text/partytown' : 'text/javascript';
+                script.id = 'cc-ga-script';
+                script.async = true;
+                script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+                document.head.appendChild(script);
+
+                // @ts-ignore
+                window.gtag('config', gaId, {
+                    'anonymize_ip': true
+                });
+            }
+        };
+
+        // Hook into cookieconsent callbacks
+        consentConfig.onConsent = ({ cookie }: any) => {
+            initGA(cookie.categories);
+        };
+
+        consentConfig.onChange = ({ cookie }: any) => {
+            initGA(cookie.categories);
+        };
+    }
+
+    // Initialize cookie consent
+    CookieConsent.run(consentConfig);
+</script>
+
+<style is:global>
+    /**
+     * Custom premium styling for vanilla-cookieconsent
+     * to match LumeGem aesthetics
+     */
+    /*
+     * Mapped onto astryx tokens. These were DaisyUI's --color-base-* / --color-primary-*,
+     * which no plugin defines any more, so every value silently fell through to its
+     * hardcoded fallback. Astryx tokens are light-dark() tuples, so one block covers both
+     * modes and the separate `.dark` override is gone.
+     */
+    :root {
+        --cc-bg: var(--color-background-surface);
+        --cc-text: var(--color-text-primary);
+        --cc-btn-primary-bg: var(--color-accent);
+        --cc-btn-primary-text: var(--color-on-accent);
+        --cc-btn-primary-hover-bg: var(--color-accent-hover, var(--color-accent));
+        --cc-btn-secondary-bg: var(--color-background-muted);
+        --cc-btn-secondary-text: var(--color-text-primary);
+        --cc-btn-secondary-hover-bg: var(--color-background-card);
+        --cc-toggle-on-bg: var(--color-accent);
+        --cc-toggle-off-bg: var(--color-border);
+        --cc-toggle-on-knob-bg: var(--color-on-accent);
+        --cc-toggle-off-knob-bg: var(--color-background-surface);
+        --cc-toggle-readonly-bg: var(--color-background-muted);
+        --cc-toggle-readonly-knob-bg: var(--color-border);
+        --cc-separator-border-color: var(--color-border);
+        --cc-modal-border-radius: var(--radius-container);
+        --cc-btn-border-radius: var(--radius-element);
+        --cc-font-family: var(--font-family-body, inherit);
+    }
+
+    #cc-main {
+        font-family: var(--cc-font-family);
+    }
+
+    #cc-main .cm,
+    #cc-main .pm {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--cc-separator-border-color);
+    }
+
+    #cc-main .cm__title {
+        font-weight: 700;
+        letter-spacing: -0.025em;
+    }
+
+    #cc-main .cc-btn {
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    #cc-main .cc-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    #cc-main .cc-btn--primary {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+</style>

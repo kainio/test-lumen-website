@@ -1,0 +1,29 @@
+---
+interface Props {
+    forcedMode?: string | null;
+}
+
+const { forcedMode } = Astro.props;
+---
+
+{/*
+  Anti-FOUC: stamp astryx's own mode attribute on <html> before first paint, so the
+  document matches what <Theme mode> will set once React hydrates.
+
+  `data-theme` is astryx's switch — reset.css maps it to `color-scheme`, and every themed
+  token is a light-dark() tuple that resolves from there. Leaving the attribute off is
+  meaningful: it means "system", where `color-scheme: light dark` follows the OS. That is
+  why `system` removes the attribute rather than resolving the media query here.
+*/}
+<script is:inline define:vars={{ forcedMode }}>
+    (function () {
+        const stored = localStorage.getItem("lumegem-theme-mode");
+        const mode = forcedMode || stored || "system";
+
+        if (mode === "light" || mode === "dark") {
+            document.documentElement.setAttribute("data-theme", mode);
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
+    })();
+</script>

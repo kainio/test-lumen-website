@@ -1,0 +1,143 @@
+<svg width="0" height="0" xmlns="http://www.w3.org/2000/svg" class="svg-sprite">
+	<defs>
+		<!-- event-large -->
+		<clipPath id="event-large-1" clipPathUnits="objectBoundingBox">
+			<path d="M0,0 v0.23 h0.088 v0.167 H0 v0.209 h0.088 v0.167 H0 V1 h0.088 v-0.001 H1 V0.002 V0 H0"></path>
+		</clipPath>
+		<clipPath id="event-large-2" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0.007 L0.009,0.152 H0 V1 h0.861 v-0.021 H1 V0"></path>
+		</clipPath>
+		<!-- event-med -->
+		<clipPath id="event-med-1" clipPathUnits="objectBoundingBox">
+			<path d="M0.465,0.018 V0 H0.011 l0.005,0.288 H0.015 L0,1 h0.422 h0.016 H0.465 h0.396 H1 V0.018 H0.465"></path>
+		</clipPath>
+		<clipPath id="event-med-2" clipPathUnits="objectBoundingBox">
+			<path d="M0.897,0.017 H0.768 V0 H0 v1 h0.129 h0.103 h0.536 h0.129 H1 V0.017 H0.897"></path>
+		</clipPath>
+		<clipPath id="event-med-3" clipPathUnits="objectBoundingBox">
+			<path d="M0.906,0.013 H0.294 L0,0 v0.979 h0.234 V1 h0.672 l0.094,-0.044 V0.003 L0.906,0.013"></path>
+		</clipPath>
+		<clipPath id="event-med-4" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0 v0.986 l0.384,-0.009 v0.023 h0.616 V0.004 l0,0 V0"></path>
+		</clipPath>
+		<!-- event-sm -->
+		<clipPath id="event-sm-1" clipPathUnits="objectBoundingBox">
+			<path d="M0.034,0.288 H0.032 L0,1 h0.944 l0.014,-0.534 H1 V0 H0.024 L0.034,0.288"></path>
+		</clipPath>
+		<clipPath id="event-sm-2" clipPathUnits="objectBoundingBox">
+			<path d="M0.567,0.001 H0.038 v0.106 l-0.009,0.276 H0 v0.09 V1 h1 V0.605 V0.384 V0 H0.567 V0.001"></path>
+		</clipPath>
+		<clipPath id="event-sm-3" clipPathUnits="objectBoundingBox">
+			<path d="M0,0 v0.617 l0.039,0.065 V1 h0.202 h0.556 H1 v-0.073 V0.499 h-0.024 L1,0 H0"></path>
+		</clipPath>
+		<clipPath id="event-sm-4" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0 v0.986 l0.384,-0.009 V1 h0.616 V0.004 l0,0 V0"></path>
+		</clipPath>
+		<clipPath id="event-sm-5" clipPathUnits="objectBoundingBox">
+			<path d="M0.967,0.304 L0.947,0 h-0.195 H0.201 H0 v0.071 v0.414 h0.026 L0.007,1 H1 V0.304 H0.967"></path>
+		</clipPath>
+		<clipPath id="event-sm-6" clipPathUnits="objectBoundingBox">
+			<path d="M0.612,0 h-0.089 h-0.141 H0 v1 l0.383,-0.016 v0.016 l0.617,-0.012 V0 H0.612"></path>
+		</clipPath>
+		<clipPath id="event-sm-7" clipPathUnits="objectBoundingBox">
+			<path d="M0.768,0.129 V0 H0 v1 h1 V0.129 H0.768"></path>
+		</clipPath>
+		<clipPath id="event-sm-8" clipPathUnits="objectBoundingBox">
+			<path d="M0.779,0 v0.029 H0 V1 h0.73 v-0.052 H1 V0 L0.779,0"></path>
+		</clipPath>
+		<!-- space-sm -->
+		<clipPath id="space-sm-1" clipPathUnits="objectBoundingBox">
+			<path d="M0,0 v0.23 h0.088 v0.167 H0 v0.209 h0.088 v0.167 H0 V1 h0.088 v-0.001 H1 V0.002 V0 H0"></path>
+		</clipPath>
+		<clipPath id="space-sm-2" clipPathUnits="objectBoundingBox">
+			<path d="M1,0.396 V0.145 h-0.088 V0 H0 v0.145 l0,0 v0.251 l0,0 v0.209 l0,0 v0.251 l0,0 V1 h0.912 v-0.145 H1 V0.604 h-0.088 V0.396 H1"></path>
+		</clipPath>
+		<clipPath id="space-sm-3" clipPathUnits="objectBoundingBox">
+			<path d="M0.084,1 c0.053,-0.033,0.127,-0.033,0.18,0 H1 V0 H0.269 c-0.026,0.018,-0.06,0.027,-0.094,0.027 C0.14,0.027,0.107,0.018,0.08,0 H0 v1 H0.084"></path>
+		</clipPath>
+		<clipPath id="space-sm-4" clipPathUnits="objectBoundingBox">
+			<path d="M0.965,0.169 c0,-0.028,0.013,-0.054,0.035,-0.075 V0 H0 v0.094 c0.022,0.021,0.035,0.047,0.035,0.075 c0,0.027,-0.012,0.054,-0.035,0.075 V1 h1 V0.244 C0.977,0.223,0.965,0.197,0.965,0.169"></path>
+		</clipPath>
+		<clipPath id="space-sm-5" clipPathUnits="objectBoundingBox">
+			<path d="M0.631,0 v0.081 h-0.263 V0 H0 v1 h0.369 v-0.082 h0.263 V1 H1 V0 H0.631"></path>
+		</clipPath>
+		<clipPath id="space-sm-6" clipPathUnits="objectBoundingBox">
+			<path d="M0.917,0 c-0.027,0.016,-0.056,0.024,-0.091,0.024 c-0.032,0,-0.064,-0.008,-0.091,-0.024 H0 v1 h0.731 c0.053,-0.037,0.133,-0.037,0.189,0 h0.08 V0 H0.917"></path>
+		</clipPath>
+		<!-- tenant-med -->
+		<clipPath id="tenant-med-1" clipPathUnits="objectBoundingBox">
+			<path d="M1,0.395 C1,0.176,0.896,0,0.768,0 c-0.05,0,-0.096,0.027,-0.134,0.073 C0.596,0.027,0.549,0,0.5,0 c-0.05,0,-0.096,0.027,-0.133,0.072 C0.328,0.026,0.282,0,0.232,0 C0.104,0,0,0.176,0,0.395 l0,0 V1 h0.267 h0.197 h0.071 h0.196 H1 V0.395 L1,0.395"></path>
+		</clipPath>
+		<clipPath id="tenant-med-2" clipPathUnits="objectBoundingBox">
+			<path d="M1,0.198 c-0.005,-0.111,-0.059,-0.198,-0.125,-0.198 c-0.066,0,-0.12,0.087,-0.125,0.198 h-0.001 c-0.005,-0.111,-0.059,-0.198,-0.125,-0.198 c-0.066,0,-0.12,0.087,-0.125,0.198 h-0.001 c-0.005,-0.111,-0.059,-0.198,-0.125,-0.198 c-0.066,0,-0.12,0.087,-0.125,0.198 h-0.001 c-0.005,-0.111,-0.059,-0.198,-0.125,-0.198 C0.059,0,0.005,0.087,0,0.198 H0 v0.802 h0.267 h0.197 h0.071 h0.196 H1 V0.198 H1"></path>
+		</clipPath>
+		<clipPath id="tenant-med-3" clipPathUnits="objectBoundingBox">
+			<path d="M0.217,0 C0.097,0,0,0.166,0,0.37 v0.535 h0.111 c0,0.052,0.025,0.095,0.056,0.095 s0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 c0.031,0,0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 c0.031,0,0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 c0.031,0,0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 c0.031,0,0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 s0.056,-0.042,0.056,-0.095 c0,0.052,0.025,0.095,0.056,0.095 c0.031,0,0.056,-0.042,0.056,-0.095 c0,0.053,0.025,0.096,0.057,0.095 c0.03,-0.001,0.055,-0.044,0.055,-0.096 V0 H0.217"></path>
+		</clipPath>
+		<clipPath id="tenant-med-4" clipPathUnits="objectBoundingBox">
+			<path d="M0.768,0 H0.232 C0.104,0,0,0.176,0,0.395 v0.497 h0.113 V1 h0.775 v-0.109 H1 V0.395 C1,0.176,0.896,0,0.768,0"></path>
+		</clipPath>
+		<!-- tenant-sm -->
+		<clipPath id="tenant-sm-1" clipPathUnits="objectBoundingBox">
+			<path d="M0.5,0 C0.224,0,0.001,0.176,0,0.395 V1 h0.735 v-0.128 H1 V0.395 C0.999,0.176,0.776,0,0.5,0"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-2" clipPathUnits="objectBoundingBox">
+			<path d="M0.95,1 c0,0,0.05,-0.115,0.05,-0.18 s-0.078,-0.112,-0.078,-0.187 s0.078,-0.1,0.078,-0.238 C1,0.178,0.776,0,0.5,0 C0.224,0,0,0.178,0,0.395 c0,0.138,0.078,0.163,0.078,0.238 S0,0.755,0,0.82 S0.05,1,0.05,1 H0.95"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-3" clipPathUnits="objectBoundingBox">
+			<path d="M1,0.376 c-0.003,-0.044,-0.05,-0.077,-0.106,-0.075 c-0.006,0,-0.012,0.001,-0.018,0.002 v0 c0.006,-0.002,0.011,-0.004,0.016,-0.006 c0.047,-0.023,0.061,-0.072,0.032,-0.11 s-0.091,-0.049,-0.138,-0.025 c-0.005,0.003,-0.01,0.005,-0.014,0.009 l0,0 c0.004,-0.004,0.007,-0.008,0.01,-0.012 c0.027,-0.038,0.009,-0.087,-0.039,-0.108 s-0.11,-0.008,-0.137,0.031 c-0.003,0.004,-0.006,0.009,-0.007,0.013 l0,0 c0.001,-0.005,0.002,-0.01,0.002,-0.014 C0.601,0.036,0.556,0,0.5,0 c-0.056,0,-0.101,0.036,-0.101,0.08 c0,0.005,0.001,0.01,0.002,0.014 l0,0 c-0.002,-0.005,-0.004,-0.009,-0.007,-0.013 c-0.027,-0.038,-0.088,-0.052,-0.137,-0.031 S0.191,0.119,0.218,0.158 c0.003,0.004,0.006,0.008,0.01,0.012 l0,0 c-0.004,-0.003,-0.009,-0.006,-0.014,-0.009 c-0.047,-0.023,-0.109,-0.012,-0.138,0.025 s-0.015,0.086,0.032,0.11 c0.005,0.003,0.011,0.005,0.016,0.006 l0,0 c-0.006,-0.001,-0.012,-0.002,-0.018,-0.002 C0.05,0.298,0.003,0.332,0,0.376 V1 h1 V0.376"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-4" clipPathUnits="objectBoundingBox">
+			<path d="M0.888,0.306 C0.887,0.137,0.714,0,0.5,0 S0.113,0.137,0.112,0.306 H0 V1 h1 V0.306 H0.888"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-5" clipPathUnits="objectBoundingBox">
+			<path d="M0.269,0 H0 v0.579 h0.06 v0.12 h0.086 V1 H1 V0.699 v-0.12 v0 C1,0.259,0.673,0,0.269,0"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-6" clipPathUnits="objectBoundingBox">
+			<path d="M0.5,0 C0.224,0,0.001,0.187,0,0.418 v0.362 v0.079 V0.921 c0,0.044,0.045,0.079,0.1,0.079 s0.1,-0.035,0.1,-0.079 c0,0.044,0.045,0.079,0.1,0.079 s0.1,-0.035,0.1,-0.079 c0,0.044,0.045,0.079,0.1,0.079 s0.1,-0.035,0.1,-0.079 c0,0.044,0.045,0.079,0.1,0.079 s0.1,-0.035,0.1,-0.079 c0,0.044,0.045,0.079,0.1,0.079 s0.1,-0.035,0.1,-0.079 v-0.061 v-0.079 V0.418 C0.999,0.187,0.776,0,0.5,0"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-7" clipPathUnits="objectBoundingBox">
+			<path d="M0.999,0.389 C0.996,0.173,0.773,-0.002,0.499,-0.002 S0.002,0.173,-0.001,0.389 l0,0 v0.609 h0.154 c0.089,-0.072,0.212,-0.114,0.346,-0.114 s0.256,0.042,0.346,0.114 h0.154 V0.389 L0.999,0.389"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-8" clipPathUnits="objectBoundingBox">
+			<path d="M1,0.39 c-0.002,-0.108,-0.113,-0.195,-0.25,-0.195 c0,0,0,0,0,0 v0 C0.748,0.087,0.637,0,0.5,0 c-0.137,0,-0.248,0.087,-0.25,0.195 v0 c0,0,0,0,0,0 c-0.137,0,-0.248,0.087,-0.25,0.195 L0,1 h1 L1,0.39"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-9" clipPathUnits="objectBoundingBox">
+			<path d="M0.5,1 c0.311,0,0.5,-0.215,0.5,-0.488 S0.729,0,0.5,0 S0,0.239,0,0.512 S0.189,1,0.5,1"></path>
+		</clipPath>
+		<clipPath id="tenant-sm-10" clipPathUnits="objectBoundingBox">
+			<path d="M0.5,0 C0.5,0,0,0.167,0,0.451 v0.416 h0.291 V1 c0.102,0,0.209,0,0.209,0 h0.5 V0.451 C1,0.167,0.5,0,0.5,0"></path>
+		</clipPath>
+		<!-- product-sm -->
+		<clipPath id="product-sm-1" clipPathUnits="objectBoundingBox">
+			<path d="M0.034,0.288 H0.032 L0,1 h0.944 l0.014,-0.534 H1 V0 H0.024 L0.034,0.288"></path>
+		</clipPath>
+		<clipPath id="product-sm-2" clipPathUnits="objectBoundingBox">
+			<path d="M0.567,0.001 H0.038 v0.106 l-0.009,0.276 H0 v0.09 V1 h1 V0.605 V0.384 V0 H0.567 V0.001"></path>
+		</clipPath>
+		<clipPath id="product-sm-3" clipPathUnits="objectBoundingBox">
+			<path d="M0,0 v0.617 l0.039,0.065 V1 h0.202 h0.556 H1 v-0.073 V0.499 h-0.024 L1,0 H0"></path>
+		</clipPath>
+		<clipPath id="product-sm-4" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0 v0.986 l0.384,-0.009 V1 h0.616 V0.004 l0,0 V0"></path>
+		</clipPath>
+		<clipPath id="product-med-1" clipPathUnits="objectBoundingBox">
+			<path d="M0.465,0.018 V0 H0.011 l0.005,0.288 H0.015 L0,1 h0.422 h0.016 H0.465 h0.396 H1 V0.018 H0.465"></path>
+		</clipPath>
+		<clipPath id="product-med-2" clipPathUnits="objectBoundingBox">
+			<path d="M0.897,0.017 H0.768 V0 H0 v1 h0.129 h0.103 h0.536 h0.129 H1 V0.017 H0.897"></path>
+		</clipPath>
+		<clipPath id="product-med-3" clipPathUnits="objectBoundingBox">
+			<path d="M0.906,0.013 H0.294 L0,0 v0.979 h0.234 V1 h0.672 l0.094,-0.044 V0.003 L0.906,0.013"></path>
+		</clipPath>
+		<clipPath id="product-med-4" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0 v0.986 l0.384,-0.009 v0.023 h0.616 V0.004 l0,0 V0"></path>
+		</clipPath>
+		<clipPath id="product-large-1" clipPathUnits="objectBoundingBox">
+			<path d="M0,0 v0.23 h0.088 v0.167 H0 v0.209 h0.088 v0.167 H0 V1 h0.088 v-0.001 H1 V0.002 V0 H0"></path>
+		</clipPath>
+		<clipPath id="product-large-2" clipPathUnits="objectBoundingBox">
+			<path d="M1,0 H0.007 L0.009,0.152 H0 V1 h0.861 v-0.021 H1 V0"></path>
+		</clipPath>
+	</defs>
+</svg>

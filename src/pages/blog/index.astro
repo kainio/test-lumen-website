@@ -1,0 +1,205 @@
+---
+import { getCollection } from 'astro:content';
+import { SiteWrapper } from '../../components/SiteWrapper';
+import CookieConsent from '../../components/CookieConsent.astro';
+import Plausible from '../../components/Plausible.astro';
+import { filterByConceptSlug, sortByDate, blogEntriesToSectionItems } from '../../services/blogUtils';
+import { fetchSiteData } from '../../services/api';
+import { optimizeSiteDataForPage } from '../../utils/optimizeSiteData';
+import { SectionType, type SiteSection } from '@lumegem/shared';
+import { getFontLinkId, getFontUrl, getStyleGuideFonts, resolveActiveThemeName } from "@lumegem/shared";
+import { renderThemeCss } from "@lumegem/lumegem-components";
+import '../../index.css';
+
+export async function getStaticPaths() {
+    if (process.env.BUILD_MODE !== 'static') return [];
+
+    try {
+        const fs = await import('node:fs/promises');
+        const path = await import('node:path');
+
+        const dataDir = path.resolve(process.cwd(), 'src/data/static');
+        const manifestStr = await fs.readFile(
+            path.join(dataDir, 'manifest.json'),
+            'utf-8'
+        );
+        const manifest = JSON.parse(manifestStr);
+
+        const paths: any[] = [];
+
+        for (const concept of manifest.concepts) {
+            if (concept.isDefault) {
+                const dataStr = await fs.readFile(
+                    path.join(dataDir, concept.dataFile),
+                    "utf-8",
+                );
+                const siteData = JSON.parse(dataStr);
+
+                // Default concept: /blog
+                paths.push({
+                    params: {},
+                    props: {
+                        conceptSlug: "default",
+                        site: siteData,
+                        actualDefaultSlug: concept.slug,
+                    },
+                });
+            }
+        }
+
+        return paths;
+    } catch (e) {
+        console.warn('Static build: manifest not found, using fallback', e);
+        // Fallback for non-static builds
+        return [];
+    }
+}
+
+const { slug } = Astro.params;
+const {
+    conceptSlug: propConceptSlug,
+    site: propSite,
+    actualDefaultSlug,
+} = Astro.props;
+
+let conceptSlug = propConceptSlug || "default";
+let site = propSite;
+
+// For non-static builds, fetch data from API
+if (!site) {
+    try {
+        const siteData = await fetchSiteData(slug ? `slug:${slug}` : undefined);
+        site = siteData;
+        conceptSlug = slug || "default";
+    } catch (error) {
+        console.error("Error fetching site data:", error);
+        const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+        const target404 = base ? `${base}/404-page` : "/404-page";
+        return Astro.redirect(target404);
+    }
+}
+
+// Fetch all blog posts and filter by concept
+const allBlogPosts = await getCollection("blog");
+// Filter by conceptSlug. If 'default', also include posts matching the actual default concept's slug.
+const defaultSlug = actualDefaultSlug || "en";
+const conceptPosts = sortByDate(
+    allBlogPosts.filter(
+        (entry) =>
+            entry.data.conceptSlug === conceptSlug ||
+            (conceptSlug === "default" &&
+                entry.data.conceptSlug === defaultSlug),
+    ),
+);
+
+// Convert to section items format
+const baseUrl = import.meta.env.BASE_URL;
+const blogItems = blogEntriesToSectionItems(conceptPosts, conceptSlug, baseUrl);
+
+// Create a mock blog section for rendering with Blog UI components
+const blogSection: SiteSection = {
+    id: 'blog-list',
+    type: SectionType.Blog1,
+    content: {
+        heading: 'Blog',
+        description: 'Discover our latest articles, insights, and updates.',
+        items: blogItems,
+    },
+    design: {
+        backgroundColor: undefined,
+    },
+};
+
+
+/**
+ * Web fonts for the concept's astryx theme. The theme CSS names the families but ships no
+ * @font-face, so they still have to be fetched. Nothing else about typography is derived
+ * here — the theme owns the type scale, weights, line-heights and letter-spacing.
+ */
+const themeFonts = getStyleGuideFonts(site?.styleGuide).map((family) => ({
+    family,
+    href: getFontUrl(family),
+    id: getFontLinkId(family),
+}));
+const activeThemeName = resolveActiveThemeName(site?.styleGuide);
+/*
+ * Astryx CSS the page cannot get from a package: the token groups astryx.css leaves
+ * undeclared, plus an uploaded theme's generated stylesheet.
+ */
+const themeCss = renderThemeCss(site?.styleGuide);
+
+const optimizedSite = optimizeSiteDataForPage(site, 'blog-list');
+---
+
+<html lang={site?.language || 'en'} dir={site?.isRtl ? 'rtl' : undefined} data-astryx-theme={activeThemeName}>
+    <head>
+        <Plausible />
+        <meta charset="utf-8" />
+        <base href={import.meta.env.BASE_URL} />
+        
+        {site.icon ? (
+            site.icon.includes('/') || site.icon.startsWith('http') || site.icon.startsWith('data:') ? (
+                <link rel="icon" href={site.icon} />
+            ) : (
+                <link rel=\"icon\" href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${site.icon}</text></svg>`} />
+            )
+        ) : (
+            <link rel=\"icon\" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+        )}
+
+        <meta name=\"viewport\" content=\"width=device-width\" />
+        <meta name=\"generator\" content={Astro.generator} />
+
+        {site.hasSelfHostedFonts || site.localFontsCss ? (
+            <link rel=\"stylesheet\" href={`${import.meta.env.BASE_URL}fonts.css`} />
+        ) : (
+            <>
+                <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />
+                <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />
+                {themeFonts.map(({ id, href }) => (<link id={id} href={href} rel="stylesheet" />))}
+            </>
+        )}
+
+        <style is:inline set:html={themeCss} />
+
+        {/*
+          Baseline only — the astryx theme owns fonts, type scale, weights, line-heights,
+          colours and radii. This used to !important-override body, h1-h6, .prose and all
+          six --leading-* properties from the style guide's typography settings.
+        */}
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background-color: var(--color-background-body);
+                color: var(--color-text-primary);
+            }
+            :root {
+                --tw-prose-body: var(--color-text-primary);
+                --tw-prose-headings: var(--color-text-primary);
+                --tw-prose-links: var(--color-accent);
+                --tw-prose-bullets: var(--color-accent);
+            }
+            .prose {
+                font-family: var(--font-family-body);
+            }
+            .prose :is(h1, h2, h3, h4, h5, h6) {
+                font-family: var(--font-family-heading);
+            }
+        </style>
+
+        <title>Blog - {site.title}</title>
+        <meta name="description" content="Discover our latest articles, insights, and updates." />
+    </head>
+    <body>
+        <SiteWrapper
+            client:load
+            page={{ id: 'blog-list', name: 'Blog', slug: slug ? `${slug}/blog` : 'blog', sections: [blogSection] }}
+            site={optimizedSite}
+            baseUrl={import.meta.env.BASE_URL}
+        />
+        <CookieConsent language={site?.language} />
+    </body>
+</html>

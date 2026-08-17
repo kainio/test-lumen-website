@@ -1,0 +1,254 @@
+---
+// Blog Layout Component for rendering individual blog posts
+import "../../index.css";
+
+interface Props {
+    title: string;
+    description: string;
+    pubDate: Date;
+    author?: string;
+    image?: string;
+    category?: string;
+    tags?: string[];
+}
+
+const { title, description, pubDate, author, image, category, tags } =
+    Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+});
+---
+
+<article class="blog-post">
+    <!-- Featured Image -->
+    {
+        image && (
+            <div class="blog-post-hero mb-8 md:mb-12">
+                <img
+                    src={image}
+                    alt={title}
+                    class="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-xl"
+                />
+            </div>
+        )
+    }
+
+    <!-- Post Header -->
+    <header class="blog-post-header mb-8 md:mb-12 max-w-4xl mx-auto">
+        <!-- Category Badge -->
+        {
+            category && (
+                <div class="mb-4">
+                    <span class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold">
+                        {category}
+                    </span>
+                </div>
+            )
+        }
+
+        <!-- Title -->
+        <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+        >
+            {title}
+        </h1>
+
+        <!-- Description -->
+        <p
+            class="text-xl md:text-2xl text-foreground opacity-70 dark:opacity-80 mb-6"
+        >
+            {description}
+        </p>
+
+        <!-- Meta Information -->
+        <div
+            class="flex flex-wrap items-center gap-4 text-sm text-foreground opacity-60 dark:opacity-70"
+        >
+            {
+                author && (
+                    <div class="flex items-center gap-2">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <span>{author}</span>
+                    </div>
+                )
+            }
+            <div class="flex items-center gap-2">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"
+                    ></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <div
+        class="blog-post-content prose prose-lg dark:prose-invert max-w-4xl mx-auto"
+    >
+        <slot />
+    </div>
+
+    <!-- Tags -->
+    {
+        tags && tags.length > 0 && (
+            <footer class="blog-post-footer mt-12 pt-8 border-t border-outline-variant max-w-4xl mx-auto">
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-sm font-semibold text-foreground opacity-70">
+                        Tags:
+                    </span>
+                    {tags.map((tag) => (
+                        <span class="inline-block bg-surface-container-high px-3 py-1 rounded-full text-sm">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            </footer>
+        )
+    }
+</article>
+
+<style>
+    .blog-post {
+        padding: 2rem 1rem;
+    }
+
+    @media (min-width: 768px) {
+        .blog-post {
+            padding: 3rem 2rem;
+        }
+    }
+
+    .prose {
+        color: var(--color-text-primary);
+    }
+
+    .prose :global(h2),
+    .prose :global(h3),
+    .prose :global(h4) {
+        font-weight: 700;
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+    }
+
+    .prose :global(h2) {
+        font-size: 2em;
+    }
+
+    .prose :global(h3) {
+        font-size: 1.5em;
+    }
+
+    .prose :global(p) {
+        margin-bottom: 1.25em;
+        line-height: 1.75;
+    }
+
+    .prose :global(ul),
+    .prose :global(ol) {
+        margin-bottom: 1.25em;
+        padding-left: 1.5em;
+    }
+
+    .prose :global(li) {
+        margin-bottom: 0.5em;
+    }
+
+    .prose :global(blockquote) {
+        border-left: 4px solid var(--color-primary);
+        padding-left: 1.5em;
+        margin: 1.5em 0;
+        font-style: italic;
+        color: var(--color-text-primary);
+        opacity: 0.9;
+    }
+
+    .prose :global(code) {
+        background: var(--color-surface-container-high);
+        padding: 0.25em 0.5em;
+        border-radius: 0.25em;
+        font-size: 0.9em;
+    }
+
+    .prose :global(pre) {
+        background: var(--color-surface-container-high);
+        padding: 1.5em;
+        border-radius: 0.5em;
+        overflow-x: auto;
+        margin: 1.5em 0;
+    }
+
+    .prose :global(pre code) {
+        background: none;
+        padding: 0;
+    }
+
+    .prose :global(img) {
+        border-radius: 0.5em;
+        margin: 2em 0;
+    }
+
+    .prose :global(table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2em 0;
+    }
+
+    .prose :global(th),
+    .prose :global(td) {
+        border: 1px solid var(--color-outline-variant);
+        padding: 0.75em;
+        text-align: left;
+    }
+
+    .prose :global(th) {
+        background: var(--color-surface-container-low);
+        font-weight: 600;
+    }
+
+    .prose :global(a) {
+        color: var(--color-primary);
+        text-decoration: none;
+        border-bottom: 1px solid var(--color-primary);
+        transition: opacity 0.2s;
+    }
+
+    .prose :global(a:hover) {
+        opacity: 0.7;
+    }
+
+    .prose :global(hr) {
+        border: none;
+        border-top: 1px solid var(--color-outline-variant);
+        margin: 3em 0;
+    }
+</style>

@@ -1,0 +1,662 @@
+---
+import { fetchPage, fetchSiteData } from "../services/api";
+import { SiteWrapper } from "../components/SiteWrapper";
+import CookieConsent from "../components/CookieConsent.astro";
+import ThemeScript from "../components/ThemeScript.astro";
+import Plausible from "../components/Plausible.astro";
+import { optimizeSiteDataForPage } from "../utils/optimizeSiteData";
+import { getFontLinkId, getFontUrl, getStyleGuideFonts, resolveActiveThemeName } from "@lumegem/shared";
+import { renderThemeCss } from "@lumegem/lumegem-components";
+import "../index.css";
+
+export async function getStaticPaths() {
+    if (process.env.BUILD_MODE !== "static") return [];
+
+    try {
+        // Try to read from prepared static data
+        const fs = await import("node:fs/promises");
+        const path = await import("node:path");
+
+        const dataDir = path.resolve(process.cwd(), "src/data/static");
+        const manifestStr = await fs.readFile(
+            path.join(dataDir, "manifest.json"),
+            "utf-8",
+        );
+        const manifest = JSON.parse(manifestStr);
+
+        const allPaths: any[] = [];
+        const seenPaths = new Set();
+
+        let defaultConceptSlug: string | undefined = undefined;
+
+        for (const concept of manifest.concepts) {
+            const dataStr = await fs.readFile(
+                path.join(dataDir, concept.dataFile),
+                "utf-8",
+            );
+            const siteData = JSON.parse(dataStr);
+
+            if (concept.isDefault && concept.slug) {
+                defaultConceptSlug = concept.slug.replace(/^\/+|\/+$/g, "");
+            }
+
+            siteData.pages.forEach((page: any) => {
+                // Normalize page slug: remove leading/trailing slashes, replace 'home' with empty
+                let pSlug = (page.slug || "").replace(/^\/+|\/+$/g, "");
+                if (pSlug === "home") pSlug = "";
+
+                if (concept.isDefault) {
+                    // Serve default concept primary page at root
+                    const primarySlug = pSlug || undefined;
+                    const pathKey = primarySlug || "/";
+
+                    if (!seenPaths.has(pathKey)) {
+                        seenPaths.add(pathKey);
+                        console.log(`  Adding path: ${primarySlug === undefined ? "/" : primarySlug}`);
+                        allPaths.push({
+                            params: { slug: primarySlug },
+                            props: {
+                                page,
+                                site: { ...siteData, id: concept.id },
+                                defaultConceptSlug,
+                                isDefault: true,
+                            },
+                        });
+                    }
+
+                    // If default concept has a slug prefix (e.g. "en"), also add a redirect route
+                    if (concept.slug) {
+                        const cSlug = concept.slug.replace(/^\/+|\/+$/g, "");
+                        const prefixedSlug = pSlug ? `${cSlug}/${pSlug}` : cSlug;
+                        const redirectPathKey = prefixedSlug || "/";
+
+                        if (!seenPaths.has(redirectPathKey)) {
+                            seenPaths.add(redirectPathKey);
+                            const isNotFoundPage = pSlug === "404-page";
+                            const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+                            const destPath = pSlug ? `/${pSlug}` : `/`;
+                            console.log(
+                                isNotFoundPage
+                                    ? `  Adding path: ${prefixedSlug}`
+                                    : `  Adding redirect path: ${prefixedSlug} -> ${destPath}`,
+                            );
+                            allPaths.push({
+                                params: { slug: prefixedSlug },
+                                props: {
+                                    redirect: isNotFoundPage ? undefined : `${base}${destPath}`,
+                                    page: isNotFoundPage ? page : { title: "Redirecting..." },
+                                    site: { ...siteData, id: concept.id },
+                                    defaultConceptSlug,
+                                    isDefault: true,
+                                },
+                            });
+                        }
+                    }
+                } else if (concept.slug) {
+                    const cSlug = concept.slug.replace(/^\/+|\/+$/g, "");
+                    const finalSlug = pSlug ? `${cSlug}/${pSlug}` : cSlug;
+                    const pathKey = finalSlug || "/";
+
+                    if (!seenPaths.has(pathKey)) {
+                        seenPaths.add(pathKey);
+                        console.log(`  Adding path: ${finalSlug}`);
+                        allPaths.push({
+                            params: { slug: finalSlug },
+                            props: {
+                                page,
+                                site: { ...siteData, id: concept.id },
+                                defaultConceptSlug,
+                                isDefault: false,
+                            },
+                        });
+                    }
+                } else {
+                    console.warn(
+                        `Concept ${concept.id} has no slug and is not default. Skipping.`,
+                    );
+                }
+            });
+        }
+
+        return allPaths;
+    } catch (e) {
+        console.warn(
+            "Static data manifest not found, falling back to API (if available)",
+            e,
+        );
+
+        // Fallback to API if manifest is missing (original behavior)
+        const mainSiteData = await fetchSiteData();
+        const concepts = mainSiteData.mountableConcepts || [];
+        const defaultConceptId = mainSiteData.defaultConceptId;
+        const allPaths: any[] = [];
+        const seenPaths = new Set();
+
+        let defaultConceptSlug: string | undefined = undefined;
+        const defaultConceptMatch = concepts.find((c: any) => c.id === defaultConceptId);
+        if (defaultConceptMatch) {
+            defaultConceptSlug = defaultConceptMatch.slug;
+        }
+
+        async function processConcept(
+            conceptId?: string,
+            conceptSlug?: string,
+        ) {
+            const isDefault = !conceptId || conceptId === defaultConceptId;
+            const siteData = await fetchSiteData(
+                conceptId ? `slug:${conceptSlug}` : undefined,
+            );
+            siteData.pages.forEach((page: any) => {
+                let pSlug = (page.slug || "").replace(/^\/+|\/+$/g, "");
+                if (pSlug === "home") pSlug = "";
+
+                if (isDefault) {
+                    const primarySlug = pSlug || undefined;
+                    const pathKey = primarySlug || "/";
+                    if (!seenPaths.has(pathKey)) {
+                        seenPaths.add(pathKey);
+                        allPaths.push({
+                            params: { slug: primarySlug },
+                            props: {
+                                page,
+                                site: { ...siteData, id: conceptId || defaultConceptId },
+                                defaultConceptSlug,
+                                isDefault: true,
+                            },
+                        });
+                    }
+
+                    const cSlug = conceptSlug || defaultConceptSlug;
+                    if (cSlug) {
+                        const cleanCSlug = cSlug.replace(/^\/+|\/+$/g, "");
+                        const prefixedSlug = pSlug ? `${cleanCSlug}/${pSlug}` : cleanCSlug;
+                        const redirectPathKey = prefixedSlug || "/";
+
+                        if (!seenPaths.has(redirectPathKey)) {
+                            seenPaths.add(redirectPathKey);
+                            const isNotFoundPage = pSlug === "404-page";
+                            const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+                            const destPath = pSlug ? `/${pSlug}` : `/`;
+                            allPaths.push({
+                                params: { slug: prefixedSlug },
+                                props: {
+                                    redirect: isNotFoundPage ? undefined : `${base}${destPath}`,
+                                    page: isNotFoundPage ? page : { title: "Redirecting..." },
+                                    site: { ...siteData, id: conceptId || defaultConceptId },
+                                    defaultConceptSlug,
+                                    isDefault: true,
+                                },
+                            });
+                        }
+                    }
+                } else if (conceptSlug) {
+                    const cSlug = conceptSlug.replace(/^\/+|\/+$/g, "");
+                    const finalSlug = pSlug ? `${cSlug}/${pSlug}` : cSlug;
+                    const pathKey = finalSlug || "/";
+
+                    if (!seenPaths.has(pathKey)) {
+                        seenPaths.add(pathKey);
+                        allPaths.push({
+                            params: { slug: finalSlug },
+                            props: {
+                                page,
+                                site: { ...siteData, id: conceptId },
+                                defaultConceptSlug,
+                                isDefault: false,
+                            },
+                        });
+                    }
+                }
+            });
+        }
+
+        await processConcept();
+        for (const concept of concepts) {
+            if (concept.id !== defaultConceptId) {
+                await processConcept(concept.id, concept.slug);
+            }
+        }
+        return allPaths;
+    }
+}
+
+const { slug } = Astro.params;
+const {
+    page: propPage,
+    site: propSite,
+    redirect: rawRedirect,
+    defaultConceptSlug,
+    isDefault,
+} = Astro.props;
+
+let redirect = rawRedirect;
+
+const currentSlug = slug || "/";
+
+
+
+let page = propPage;
+let site = propSite;
+
+// Case-insensitive URL param lookup (e.g. projectId / projectid / PROJECTID all work)
+const getParam = (name: string): string | undefined => {
+    const lower = name.toLowerCase();
+    for (const [key, val] of Astro.url.searchParams.entries()) {
+        if (key.toLowerCase() === lower) return val || undefined;
+    }
+    return undefined;
+};
+
+if (!page || !site) {
+    try {
+        const conceptId = getParam("conceptId");
+        const projectId = getParam("projectId");
+        const forcedThemeParam = getParam("theme");
+        const data = await fetchPage(currentSlug, conceptId, projectId);
+        page = data.page;
+        site = data.site;
+        
+
+
+        // Add redirect check for default concept prefix in dynamic SSR/preview mode
+        if (site) {
+            const defaultConcept = site.concepts?.find((c: any) => c.id === site.defaultConceptId);
+            if (defaultConcept && defaultConcept.slug) {
+                const cleanConceptSlug = defaultConcept.slug.replace(/^\/+|\/+$/g, "");
+                const cleanSlug = currentSlug.replace(/^\/+|\/+$/g, "");
+                const parts = cleanSlug.split("/");
+                if (parts[0] === cleanConceptSlug) {
+                    const remainingSlug = parts.slice(1).join("/");
+                    if (remainingSlug !== "404-page") {
+                        redirect = remainingSlug ? `/${remainingSlug}` : `/`;
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching site data:", error);
+    }
+}
+
+
+// Compute the final redirect URL (respecting BASE_URL)
+if (redirect && redirect.startsWith("/")) {
+    const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+    if (base && !redirect.startsWith(base)) {
+        redirect = base + redirect;
+    }
+}
+
+
+// Check for forced theme or mode from URL
+const forcedMode = getParam("mode");
+
+/**
+ * Mode for the server render. `data-theme` is astryx's own switch — reset.css maps it to
+ * `color-scheme`, and every themed token is a light-dark() tuple that resolves from there.
+ * Omitting the attribute means "system". ThemeScript refines this from localStorage before
+ * first paint, and <Theme mode> takes over at hydration.
+ */
+const ssrMode = forcedMode === "dark" || forcedMode === "light" ? forcedMode : null;
+
+/**
+ * Web fonts for the concept's theme. Astryx theme CSS names the families on
+ * --font-family-body / --font-family-heading but ships no @font-face, so they still have
+ * to be fetched. Nothing else about typography is injected: the theme owns the type scale,
+ * weights, line-heights and letter-spacing.
+ */
+const themeFonts = getStyleGuideFonts(site?.styleGuide).map((family) => ({
+    family,
+    href: getFontUrl(family),
+    id: getFontLinkId(family),
+}));
+
+if (!page) {
+    let target404 = "/404-page";
+    if (slug) {
+        const cleanSlug = slug.replace(/^\/+|\/+$/g, "");
+        const parts = cleanSlug.split("/");
+        const firstSegment = parts[0];
+        const concepts = site?.concepts || site?.mountableConcepts || [];
+        const matchedConcept = concepts.find((c: any) => c.slug && c.slug.replace(/^\/+|\/+$/g, "") === firstSegment);
+        if (matchedConcept) {
+            const conceptSlug = matchedConcept.slug.replace(/^\/+|\/+$/g, "");
+            target404 = `/${conceptSlug}/404-page`;
+        }
+    }
+    const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+    if (base && !target404.startsWith(base)) {
+        target404 = base + target404;
+    }
+    return Astro.redirect(target404);
+}
+
+const optimizedSite = optimizeSiteDataForPage(site, page?.id);
+const isStaticBuild = process.env.BUILD_MODE === "static";
+const staticRouteGuardPages = (site?.pages || []).map((candidatePage: any) => ({
+    id: candidatePage.id,
+    slug: candidatePage.slug,
+}));
+const staticRouteGuardConcepts = [
+    ...(site?.mountableConcepts || []),
+    ...(site?.concepts || []),
+]
+    .filter((concept: any) => concept?.slug)
+    .reduce((concepts: any[], concept: any) => {
+        const cleanSlug = concept.slug.replace(/^\/+|\/+$/g, "");
+        if (!cleanSlug || concepts.some((existing) => existing.slug === cleanSlug)) {
+            return concepts;
+        }
+        concepts.push({
+            id: concept.id,
+            slug: cleanSlug,
+        });
+        return concepts;
+    }, []);
+
+const activeThemeName = resolveActiveThemeName(site?.styleGuide);
+/*
+ * Astryx CSS the page cannot get from a package: the token groups astryx.css leaves
+ * undeclared, plus an uploaded theme's generated stylesheet.
+ */
+const themeCss = renderThemeCss(site?.styleGuide);
+---
+
+<html
+    lang={site?.language || "en"}
+    data-concept-id={site?.id}
+    dir={site?.isRtl ? "rtl" : undefined}
+    data-theme={ssrMode ?? undefined}
+    data-astryx-theme={activeThemeName}
+>
+    <head>
+        <meta charset="utf-8" />
+        <base href={import.meta.env.BASE_URL} />
+        {
+            site.icon ? (
+                // If it's a URL or path, use it directly
+                site.icon.includes("/") ||
+                site.icon.startsWith("http") ||
+                site.icon.startsWith("data:") ? (
+                    <link rel="icon" href={site.icon} />
+                ) : (
+                    // If it's an emoji (or short string), render as SVG data URI
+                    <link
+                        rel="icon"
+                        href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${site.icon}</text></svg>`}
+                    />
+                )
+            ) : (
+                <link
+                    rel="icon"
+                    href={`${import.meta.env.BASE_URL}favicon.svg`}
+                />
+            )
+        }
+
+        {
+            redirect && (
+                <>
+                    <meta name="robots" content="noindex" />
+                    <meta http-equiv="refresh" content={`0;url=${redirect}`} />
+                    <script is:inline define:vars={{ url: redirect }}>
+                        window.location.href = url;
+                    </script>
+                    {(() => {
+                        try {
+                            return (
+                                <link
+                                    rel="canonical"
+                                    href={new URL(
+                                        redirect,
+                                        Astro.site || "https://localhost",
+                                    ).toString()}
+                                />
+                            );
+                        } catch {
+                            return null;
+                        }
+                    })()}
+                </>
+            )
+        }
+
+        {
+            isStaticBuild && !redirect && (
+                <script
+                    is:inline
+                    define:vars={{
+                        pages: staticRouteGuardPages,
+                        concepts: staticRouteGuardConcepts,
+                        baseUrl: import.meta.env.BASE_URL,
+                    }}
+                >
+                    (() => {
+                        const clean = (value) =>
+                            String(value || "").replace(/^\/+|\/+$/g, "");
+                        const normalizePageSlug = (slug) => {
+                            const normalized = clean(slug);
+                            return normalized === "home" ? "" : normalized;
+                        };
+
+                        const basePath = clean(baseUrl);
+                        const rawPath = window.location.pathname;
+                        let requestedPath = clean(rawPath);
+                        if (
+                            basePath &&
+                            (requestedPath === basePath ||
+                                requestedPath.startsWith(`${basePath}/`))
+                        ) {
+                            requestedPath = clean(requestedPath.slice(basePath.length));
+                        }
+
+                        if (
+                            requestedPath === "404-page" ||
+                            requestedPath.endsWith("/404-page")
+                        ) {
+                            return;
+                        }
+
+                        const firstSegment = requestedPath.split("/")[0];
+                        const matchedConcept = concepts.find(
+                            (concept) => clean(concept.slug) === firstSegment,
+                        );
+                        const requestedPageSlug = matchedConcept
+                            ? normalizePageSlug(
+                                  requestedPath.split("/").slice(1).join("/"),
+                              )
+                            : normalizePageSlug(requestedPath);
+                        const knownPageSlugs = pages.map((candidatePage) =>
+                            normalizePageSlug(candidatePage.slug),
+                        );
+
+                        if (knownPageSlugs.includes(requestedPageSlug)) {
+                            return;
+                        }
+
+                        const targetPath = matchedConcept
+                            ? `${clean(matchedConcept.slug)}/404-page`
+                            : "404-page";
+                        const targetUrl = `${basePath ? `/${basePath}` : ""}/${targetPath}`;
+                        if (window.location.pathname !== targetUrl) {
+                            window.location.replace(targetUrl);
+                        }
+                    })();
+                </script>
+            )
+        }
+
+        <ThemeScript 
+            forcedMode={forcedMode} 
+        />
+        <Plausible />
+
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        {
+            site.hasSelfHostedFonts || site.localFontsCss ? (
+                <link
+                    rel="stylesheet"
+                    href={`${import.meta.env.BASE_URL}fonts.css`}
+                />
+            ) : (
+                <>
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.googleapis.com"
+                    />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.gstatic.com"
+                        crossorigin
+                    />
+                    { themeFonts.map(({ id, href }) => (<link id={id} href={href} rel="stylesheet" />)) }
+                </>
+            )
+        }
+        <style is:inline set:html={themeCss} />
+
+        {/*
+          Baseline only. Fonts, type scale, weights, line-heights, colours and radii all come
+          from the astryx theme's tokens. This block used to !important-override body,
+          h1-h6, .prose, every .leading-* utility and all six --leading-* custom properties
+          from the style guide, which meant the chosen theme's typography never applied.
+        */}
+        <style is:global>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background-color: var(--color-background-body);
+                color: var(--color-text-primary);
+            }
+            /* Point @tailwindcss/typography at astryx tokens so prose follows the theme. */
+            :root {
+                --tw-prose-body: var(--color-text-primary);
+                --tw-prose-headings: var(--color-text-primary);
+                --tw-prose-links: var(--color-accent);
+                --tw-prose-bullets: var(--color-accent);
+            }
+            .prose {
+                font-family: var(--font-family-body);
+            }
+            .prose :is(h1, h2, h3, h4, h5, h6) {
+                font-family: var(--font-family-heading);
+            }
+        </style>
+        <title>{page.seo?.title || page.name} - {site.title}</title>
+        {
+            page.seo?.description && (
+                <meta name="description" content={page.seo.description} />
+            )
+        }
+        {
+            page.seo?.keywords && (
+                <meta name="keywords" content={page.seo.keywords} />
+            )
+        }
+        {
+            page.seo?.title && (
+                <meta property="og:title" content={page.seo.title} />
+            )
+        }
+        {
+            page.seo?.description && (
+                <meta
+                    property="og:description"
+                    content={page.seo.description}
+                />
+            )
+        }
+        {
+            page.seo?.ogImage && (
+                <meta property="og:image" content={page.seo.ogImage} />
+            )
+        }
+
+        {
+            !redirect &&
+                (() => {
+                    try {
+                        return (
+                            <link
+                                rel="canonical"
+                                href={new URL(
+                                    Astro.url.pathname,
+                                    Astro.site || "https://localhost",
+                                ).toString()}
+                            />
+                        );
+                    } catch {
+                        return null;
+                    }
+                })()
+        }
+
+        {/* SEO: Hreflang tags for multi-concept support */}
+        {
+            site?.mountableConcepts?.map((concept: any) => {
+                try {
+                    const pSlug = (page?.slug || "").replace(/^\/+|\/+$/g, "");
+                    const cleanPageSlug =
+                        pSlug === "home" || pSlug === "" ? "" : pSlug;
+                    const cleanConceptSlug = (concept.slug || "").replace(
+                        /^\/+|\/+$/g,
+                        "",
+                    );
+
+                    const isDefault = concept.slug === defaultConceptSlug;
+
+                    let variantPath = isDefault ? "" : cleanConceptSlug;
+                    if (cleanPageSlug) {
+                        variantPath = isDefault ? cleanPageSlug : `${cleanConceptSlug}/${cleanPageSlug}`;
+                    }
+
+                    const siteBase = Astro.site || "https://localhost";
+                    const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+                    const pathWithBase =
+                        `${base}/${variantPath}`.replace(/\/+$/, "") + "/";
+                    const finalUrl = new URL(pathWithBase, siteBase).toString();
+
+                    return (
+                        <>
+                            <link
+                                rel="alternate"
+                                hreflang={concept.slug || "x-default"}
+                                href={finalUrl}
+                            />
+                            {isDefault && (
+                                <link
+                                    rel="alternate"
+                                    hreflang="x-default"
+                                    href={new URL(
+                                        base || "/",
+                                        siteBase,
+                                    ).toString()}
+                                />
+                            )}
+                        </>
+                    );
+                } catch {
+                    return null;
+                }
+            })
+        }
+    </head>
+    <body>
+        {
+            !redirect && (
+                <SiteWrapper
+                    client:load
+                    page={page}
+                    site={optimizedSite}
+                    baseUrl={import.meta.env.BASE_URL}
+                    initialMode={ssrMode || undefined}
+                />
+
+            )
+        }
+        <CookieConsent language={site?.language} />
+    </body>
+</html>

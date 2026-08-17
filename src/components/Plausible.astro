@@ -1,0 +1,12 @@
+---
+// Read Vite-defined Plausible configuration
+// @ts-ignore
+const plausibleConfig = typeof PLAUSIBLE_CONFIG !== 'undefined' ? PLAUSIBLE_CONFIG : { enabled: false, domain: '', src: 'https://plausible.io/js/script.js' };
+const enabled = plausibleConfig.enabled && !!plausibleConfig.domain;
+const domain = plausibleConfig.domain;
+const src = plausibleConfig.src || 'https://plausible.io/js/script.js';
+---
+
+{enabled && (
+    <script defer data-domain={domain} src={src}></script>
+)}

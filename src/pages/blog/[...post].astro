@@ -1,0 +1,78 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import PostPageLayout from "../../components/layouts/PostPageLayout.astro";
+import { fetchSiteData } from "../../services/api";
+import * as contentUtils from "../../services/contentUtils";
+
+export async function getStaticPaths() {
+    if (process.env.BUILD_MODE !== "static") return [];
+    const allBlogPosts = await getCollection("blog");
+    try {
+        const fs = await import("node:fs/promises");
+        const path = await import("node:path");
+        const dataDir = path.resolve(process.cwd(), "src/data/static");
+        const manifest = JSON.parse(await fs.readFile(path.join(dataDir, "manifest.json"), "utf-8"));
+        const paths: any[] = [];
+        for (const concept of manifest.concepts) {
+            const siteData = JSON.parse(await fs.readFile(path.join(dataDir, concept.dataFile), "utf-8"));
+            const conceptSlug = concept.slug ? concept.slug.replace(/^\/+|\/+$/g, "") : "default";
+            const conceptPosts = allBlogPosts.filter(post => post.data.conceptSlug === conceptSlug || post.id.startsWith(`${conceptSlug}/`) || (conceptSlug === 'default' && !post.id.includes('/')));
+            for (const post of conceptPosts) {
+                if (concept.isDefault) {
+                    paths.push({ params: { post: contentUtils.stripConceptPrefix(post.id) }, props: { entry: post, conceptSlug: "default", site: siteData } });
+                }
+            }
+        }
+        return paths;
+    } catch (e) {
+        console.warn("Static build: manifest not found, using fallback", e);
+        return [];
+    }
+}
+
+const { post } = Astro.params;
+const { entry: propEntry, conceptSlug: propConceptSlug, site: propSite } = Astro.props;
+
+let entry: CollectionEntry<"blog"> = propEntry;
+let conceptSlug = propConceptSlug || "default";
+let site = propSite;
+
+if (!entry || !site) {
+    try {
+        const allPosts = await getCollection("blog");
+        const conceptPrefix = conceptSlug === "default" ? "default/" : `${conceptSlug}/`;
+        entry = allPosts.find(p => p.id === `${conceptPrefix}${post}`) || allPosts.find(p => p.id === post) || allPosts.find(p => contentUtils.stripConceptPrefix(p.id) === post)!;
+        if (!entry) {
+            const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+            const target404 = base ? `${base}/404-page` : "/404-page";
+            return Astro.redirect(target404);
+        }
+        site = await fetchSiteData(undefined);
+        conceptSlug = "default";
+    } catch (error) {
+        const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+        const target404 = base ? `${base}/404-page` : "/404-page";
+        return Astro.redirect(target404);
+    }
+}
+
+const { Content } = await render(entry);
+const readingTime = contentUtils.calculateReadingTime(entry.body || "");
+const blogListUrl = contentUtils.resolveContentListUrl("blog", conceptSlug, import.meta.env.BASE_URL);
+
+
+const forcedMode = Astro.url.searchParams.get("mode");
+---
+
+<PostPageLayout
+    entry={entry}
+    site={site}
+    forcedMode={forcedMode}
+    readingTime={readingTime}
+    backUrl={blogListUrl}
+    backLabel="Back to Blog"
+    conceptSlug={conceptSlug}
+    pageIdPrefix="blog-post"
+>
+    <Content />
+</PostPageLayout>

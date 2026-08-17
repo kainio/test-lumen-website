@@ -1,0 +1,976 @@
+{
+    "site": {
+        "title": "My SaaS Project",
+        "layouts": [
+            {
+                "id": "layout-main",
+                "name": "Main Layout",
+                "sections": [
+                    {
+                        "id": "nav-1",
+                        "type": "navbar_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Panier",
+                                    "style": "icon-badge",
+                                    "href": "#",
+                                    "badgeText": "",
+                                    "action": "viewCart"
+                                },
+                                {
+                                    "text": "Link",
+                                    "style": "link",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Link One",
+                                    "description": "",
+                                    "url": "//page-5"
+                                },
+                                {
+                                    "title": "Link Two",
+                                    "description": "",
+                                    "url": "/page-5"
+                                },
+                                {
+                                    "title": "Link Three",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Four",
+                                    "description": "",
+                                    "url": "#"
+                                }
+                            ],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "layout-content",
+                        "type": "layout_content",
+                        "content": {
+                            "heading": "Page Content",
+                            "description": "Content from individual pages will be inserted here.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "footer-1",
+                        "type": "footer_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Privacy Policy",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Terms of Service",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Cookies Settings",
+                                    "style": "link",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Column One",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Two",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Three",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "image_alt": "Placeholder image",
+                            "copyright_text": "© 2024 Brand. All rights reserved.",
+                            "social_links": [
+                                {
+                                    "platform": "facebook",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "instagram",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "twitter",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "linkedin",
+                                    "url": "#"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "layout-1765184309074",
+                "name": "Content only",
+                "sections": [
+                    {
+                        "id": "content-1765184309074",
+                        "type": "layout_content",
+                        "content": {
+                            "heading": "Page Content",
+                            "description": "Content from individual pages will be inserted here.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "layout-1765368490016",
+                "name": "Checkout page",
+                "sections": [
+                    {
+                        "id": "nav-1765368490016",
+                        "type": "navbar_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Link One",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Two",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Three",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Four",
+                                    "description": "",
+                                    "url": "#"
+                                }
+                            ],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "content-1765368490016",
+                        "type": "layout_content",
+                        "content": {
+                            "heading": "Page Content",
+                            "description": "Content from individual pages will be inserted here.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "footer-1765368490016",
+                        "type": "footer_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Privacy Policy",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Terms of Service",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Cookies Settings",
+                                    "style": "link",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Column One",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Two",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Three",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "image_alt": "Placeholder image",
+                            "copyright_text": "© 2024 Brand. All rights reserved.",
+                            "social_links": [
+                                {
+                                    "platform": "facebook",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "instagram",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "twitter",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "linkedin",
+                                    "url": "#"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "layout-1765368574492",
+                "name": "Product Gallery page",
+                "sections": [
+                    {
+                        "id": "nav-1765368574492",
+                        "type": "navbar_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Link One",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Two",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Three",
+                                    "description": "",
+                                    "url": "#"
+                                },
+                                {
+                                    "title": "Link Four",
+                                    "description": "",
+                                    "url": "#"
+                                }
+                            ],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "content-1765368574492",
+                        "type": "layout_content",
+                        "content": {
+                            "heading": "Page Content",
+                            "description": "Content from individual pages will be inserted here.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "footer-1765368574492",
+                        "type": "footer_1",
+                        "content": {
+                            "heading": "Brand",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.",
+                            "buttons": [
+                                {
+                                    "text": "Privacy Policy",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Terms of Service",
+                                    "style": "link",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Cookies Settings",
+                                    "style": "link",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Column One",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Two",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "Column Three",
+                                    "description": "",
+                                    "link_items": [
+                                        {
+                                            "text": "Link One",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Two",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Three",
+                                            "url": "#"
+                                        },
+                                        {
+                                            "text": "Link Four",
+                                            "url": "#"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "image_alt": "Placeholder image",
+                            "copyright_text": "© 2024 Brand. All rights reserved.",
+                            "social_links": [
+                                {
+                                    "platform": "facebook",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "instagram",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "twitter",
+                                    "url": "#"
+                                },
+                                {
+                                    "platform": "linkedin",
+                                    "url": "#"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "pages": [
+            {
+                "id": "home",
+                "name": "Home",
+                "slug": "/",
+                "seo": {
+                    "title": "Home",
+                    "description": "Hello Hello",
+                    "ogImage": "/uploads/concept-default/119.jpg"
+                },
+                "sections": [
+                    {
+                        "id": "header-1",
+                        "type": "header_1",
+                        "content": {
+                            "heading": "Build better websites, faster.",
+                            "description": "Generate marketing websites in seconds with AI. Export to clean React & Tailwind code.",
+                            "items": [],
+                            "buttons": [
+                                {
+                                    "text": "Learn More",
+                                    "style": "link-chevron",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Contact Us",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "image_alt": "Abstract digital architecture",
+                            "image": "/uploads/concept-default/119.jpg",
+                            "image_attribution": ""
+                        },
+                        "design": {
+                            "seo": {
+                                "headingLevel": "h1"
+                            },
+                            "parallax": true
+                        }
+                    },
+                    {
+                        "id": "pricing-1",
+                        "type": "pricing_1",
+                        "content": {
+                            "heading": "Simple, transparent pricing",
+                            "description": "Choose the plan that's right for your business. No hidden fees.",
+                            "items": [
+                                {
+                                    "title": "Basic",
+                                    "description": "$19/mo",
+                                    "list_items": [
+                                        "5 Projects",
+                                        "Basic Analytics",
+                                        "Community Support",
+                                        "1GB Storage"
+                                    ]
+                                },
+                                {
+                                    "title": "Pro",
+                                    "description": "$49/mo",
+                                    "list_items": [
+                                        "Unlimited Projects",
+                                        "Advanced Analytics",
+                                        "Priority Support",
+                                        "10GB Storage",
+                                        "Custom Domains"
+                                    ]
+                                },
+                                {
+                                    "title": "Enterprise",
+                                    "description": "$99/mo",
+                                    "list_items": [
+                                        "Everything in Pro",
+                                        "SSO Authentication",
+                                        "Dedicated Account Manager",
+                                        "Unlimited Storage",
+                                        "SLA"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "gallery_18-1765197586100",
+                        "type": "gallery_10",
+                        "content": {
+                            "heading": "Our Gallery",
+                            "description": "A glimpse into our world.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Project One",
+                                    "description": "Description for project one",
+                                    "image_attribution": "Photo by Unsplash"
+                                },
+                                {
+                                    "title": "Project Two",
+                                    "description": "Description for project two",
+                                    "image_attribution": "Photo by Unsplash"
+                                },
+                                {
+                                    "title": "Project Three",
+                                    "description": "Description for project three",
+                                    "image_attribution": "Photo by Unsplash"
+                                },
+                                {
+                                    "title": "Project Four",
+                                    "description": "Description for project four",
+                                    "image_attribution": "Photo by Unsplash"
+                                },
+                                {
+                                    "title": "Project Five",
+                                    "description": "Description for project five",
+                                    "image_attribution": "Photo by Unsplash"
+                                },
+                                {
+                                    "title": "Project Six",
+                                    "description": "Description for project six",
+                                    "image_attribution": "Photo by Unsplash"
+                                }
+                            ],
+                            "image_alt": "Placeholder image"
+                        }
+                    },
+                    {
+                        "id": "testimonial_1-1765365420299",
+                        "type": "testimonial_1",
+                        "content": {
+                            "heading": "Customer Testimonials",
+                            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Name Surname",
+                                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+                                    "rating": 5,
+                                    "image": "https://i.pravatar.cc/150?u=1"
+                                },
+                                {
+                                    "title": "Name Surname",
+                                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+                                    "rating": 5,
+                                    "image": "https://i.pravatar.cc/150?u=2"
+                                },
+                                {
+                                    "title": "Name Surname",
+                                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+                                    "rating": 5,
+                                    "image": "https://i.pravatar.cc/150?u=3"
+                                }
+                            ],
+                            "image_alt": "Placeholder image"
+                        }
+                    }
+                ],
+                "layoutId": "layout-main"
+            },
+            {
+                "id": "page-1765184334270",
+                "name": "Welcome",
+                "slug": "/welcome",
+                "seo": {
+                    "title": "Welcome Home",
+                    "description": "Everywhere is our Home",
+                    "ogImage": "/uploads/concept-default/119.jpg"
+                },
+                "sections": [
+                    {
+                        "id": "header_9-1765184367507",
+                        "type": "cta_1",
+                        "content": {
+                            "heading": "Welcome Home",
+                            "description": "Mabrouk 3lina",
+                            "buttons": [],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        },
+                        "design": {
+                            "seo": {
+                                "headingLevel": "h1"
+                            }
+                        }
+                    }
+                ],
+                "layoutId": "layout-1765184309074"
+            },
+            {
+                "id": "page-1765368628247",
+                "name": "T-shirt 1",
+                "slug": "/t-shirt-1",
+                "sections": [
+                    {
+                        "id": "product_hero_1-1765368740165",
+                        "type": "product_hero_1",
+                        "content": {
+                            "heading": "Premium Leather Backpack",
+                            "description": "Handcrafted from full-grain leather, this backpack features a padded laptop sleeve, multiple compartments, and durable brass hardware. Perfect for daily commute or weekend getaways.",
+                            "buttons": [
+                                {
+                                    "text": "Add to Cart - $199",
+                                    "style": "primary",
+                                    "href": "#",
+                                    "action": "addToCart"
+                                },
+                                {
+                                    "text": "View Details",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Material",
+                                    "description": "Full-grain Leather"
+                                },
+                                {
+                                    "title": "Dimensions",
+                                    "description": "18 x 12 x 6 inches"
+                                },
+                                {
+                                    "title": "Warranty",
+                                    "description": "Lifetime Guarantee",
+                                    "productId": "tshirt-1"
+                                }
+                            ],
+                            "image_alt": "Placeholder image",
+                            "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800",
+                            "reviewCount": "50",
+                            "price": "30",
+                            "productId": "tshirt-1"
+                        },
+                        "design": {
+                            "animation": "none",
+                            "animationDuration": "fast"
+                        }
+                    },
+                    {
+                        "id": "product_grid_1-1765373280604",
+                        "type": "product_grid_1",
+                        "content": {
+                            "heading": "Featured Products",
+                            "description": "Explore our latest collection of premium items.",
+                            "buttons": [
+                                {
+                                    "text": "View All Products",
+                                    "style": "secondary",
+                                    "href": "#",
+                                    "action": "addToCart"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "title": "Essential Tee",
+                                    "description": "$29.00",
+                                    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ],
+                                    "productId": "tshirt-1"
+                                },
+                                {
+                                    "title": "Classic Denim",
+                                    "description": "$89.00",
+                                    "image": "https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ],
+                                    "productId": "tshirt-1"
+                                },
+                                {
+                                    "title": "Urban Jacket",
+                                    "description": "$120.00",
+                                    "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ],
+                                    "productId": "tshirt-1"
+                                },
+                                {
+                                    "title": "Sneakers",
+                                    "description": "$95.00",
+                                    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ],
+                                    "productId": "tshirt-1"
+                                },
+                                {
+                                    "title": "Accessories",
+                                    "description": "$45.00",
+                                    "image": "https://images.unsplash.com/photo-1523293188086-b51292955d2c?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ],
+                                    "productId": "tshirt-1"
+                                },
+                                {
+                                    "title": "Summer Hat",
+                                    "description": "$35.00",
+                                    "image": "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=500",
+                                    "buttons": [
+                                        {
+                                            "text": "Add to Cart",
+                                            "style": "primary",
+                                            "href": "#"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "image_alt": "Placeholder image",
+                            "productId": "tshirt-1"
+                        }
+                    }
+                ],
+                "layoutId": "layout-1765368490016"
+            },
+            {
+                "id": "page-1765369003224",
+                "name": "checkout",
+                "slug": "/page-4",
+                "sections": [
+                    {
+                        "id": "checkout_1-1765369029196",
+                        "type": "checkout_1",
+                        "content": {
+                            "heading": "Checkout",
+                            "description": "Complete your order securely via WhatsApp.",
+                            "buttons": [
+                                {
+                                    "text": "Button",
+                                    "style": "primary",
+                                    "href": "#"
+                                },
+                                {
+                                    "text": "Button",
+                                    "style": "secondary",
+                                    "href": "#"
+                                }
+                            ],
+                            "items": [],
+                            "image_alt": "Placeholder image"
+                        }
+                    }
+                ],
+                "layoutId": "layout-1765368490016"
+            },
+            {
+                "id": "page-1765379073778",
+                "name": "New Page",
+                "slug": "/page-5",
+                "sections": [],
+                "layoutId": "layout-main"
+            }
+        ]
+    }
+}

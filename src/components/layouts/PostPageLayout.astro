@@ -1,0 +1,216 @@
+---
+import { SiteWrapper } from "../SiteWrapper";
+import CookieConsent from "../CookieConsent.astro";
+import ThemeScript from "../ThemeScript.astro";
+import Plausible from "../Plausible.astro";
+import BlogLayout from "./BlogLayout.astro";
+import { optimizeSiteDataForPage } from "../../utils/optimizeSiteData";
+import { getFontLinkId, getFontUrl, getStyleGuideFonts, resolveActiveThemeName } from "@lumegem/shared";
+import { renderThemeCss } from "@lumegem/lumegem-components";
+import "../../index.css";
+
+interface Props {
+    entry: any;
+    site: any;
+    forcedMode?: string | null;
+    readingTime?: number | string;
+    backUrl: string;
+    backLabel: string;
+    conceptSlug: string;
+    pageIdPrefix: string;
+}
+
+const {
+    entry,
+    site,
+    forcedMode,
+    readingTime,
+    backUrl,
+    backLabel,
+    conceptSlug,
+    pageIdPrefix,
+} = Astro.props;
+
+/**
+ * Web fonts for the concept's astryx theme. The theme CSS names the families but ships no
+ * @font-face, so they still have to be fetched. Nothing else about typography is derived
+ * here — the theme owns the type scale, weights, line-heights and letter-spacing.
+ */
+const themeFonts = getStyleGuideFonts(site?.styleGuide).map((family) => ({
+    family,
+    href: getFontUrl(family),
+    id: getFontLinkId(family),
+}));
+const activeThemeName = resolveActiveThemeName(site?.styleGuide);
+/*
+ * Astryx CSS the page cannot get from a package: the token groups astryx.css leaves
+ * undeclared, plus an uploaded theme's generated stylesheet.
+ */
+const themeCss = renderThemeCss(site?.styleGuide);
+
+const pageId = `${pageIdPrefix}-${entry.id}`;
+const optimizedSite = optimizeSiteDataForPage(site, pageId);
+
+---
+
+<html
+    lang={site?.language || "en"}
+    data-theme={forcedMode === "dark" || forcedMode === "light" ? forcedMode : undefined}
+    dir={site?.isRtl ? "rtl" : undefined}
+    data-astryx-theme={activeThemeName}
+>
+    <head>
+        <meta charset="utf-8" />
+        <base href={import.meta.env.BASE_URL} />
+
+        <ThemeScript
+            forcedMode={forcedMode}
+        />
+        <Plausible />
+
+        {
+            site.icon ? (
+                site.icon.includes("/") ||
+                site.icon.startsWith("http") ||
+                site.icon.startsWith("data:") ? (
+                    <link rel="icon" href={site.icon} />
+                ) : (
+                    <link
+                        rel="icon"
+                        href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${site.icon}</text></svg>`}
+                    />
+                )
+            ) : (
+                <link
+                    rel="icon"
+                    href={`${import.meta.env.BASE_URL}favicon.svg`}
+                />
+            )
+        }
+
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+
+        {
+            site.hasSelfHostedFonts || site.localFontsCss ? (
+                <link
+                    rel="stylesheet"
+                    href={`${import.meta.env.BASE_URL}fonts.css`}
+                />
+            ) : (
+                <>
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.googleapis.com"
+                    />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.gstatic.com"
+                        crossorigin
+                    />
+                    {themeFonts.map(({ id, href }) => (<link id={id} href={href} rel="stylesheet" />))}
+                </>
+            )
+        }
+
+        <style is:inline set:html={themeCss} />
+
+        {/*
+          Baseline only — the astryx theme owns fonts, type scale, weights, line-heights,
+          colours and radii. This used to !important-override body, h1-h6, .prose and all
+          six --leading-* properties from the style guide's typography settings.
+        */}
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background-color: var(--color-background-body);
+                color: var(--color-text-primary);
+            }
+            :root {
+                --tw-prose-body: var(--color-text-primary);
+                --tw-prose-headings: var(--color-text-primary);
+                --tw-prose-links: var(--color-accent);
+                --tw-prose-bullets: var(--color-accent);
+            }
+            .prose {
+                font-family: var(--font-family-body);
+            }
+            .prose :is(h1, h2, h3, h4, h5, h6) {
+                font-family: var(--font-family-heading);
+            }
+        </style>
+
+        <title>{entry.data.title} - {site.title}</title>
+        <meta name="description" content={entry.data.description} />
+        <meta property="og:title" content={entry.data.title} />
+        <meta property="og:description" content={entry.data.description} />
+        {
+            entry.data.image && (
+                <meta property="og:image" content={entry.data.image} />
+            )
+        }
+        <meta property="og:type" content="article" />
+        <meta
+            property="article:published_time"
+            content={entry.data.pubDate.toISOString()}
+        />
+        {
+            entry.data.author && (
+                <meta property="article:author" content={entry.data.author} />
+            )
+        }
+        {
+            entry.data.category && (
+                <meta
+                    property="article:section"
+                    content={entry.data.category}
+                />
+            )
+        }
+        {
+            entry.data.tags?.map((tag: string) => (
+                <meta property="article:tag" content={tag} />
+            ))
+        }
+    </head>
+    <body>
+        <SiteWrapper
+            client:load
+            page={{
+                id: `${pageIdPrefix}-${entry.id}`,
+                name: entry.data.title,
+                slug: backUrl.replace(/^\/|\/$/g, "") + "/" + entry.id,
+                sections: [],
+                layoutId: entry.data.layoutId,
+            }}
+            site={optimizedSite}
+            baseUrl={import.meta.env.BASE_URL}
+        >
+            <div class="min-h-screen">
+                <BlogLayout
+                    title={entry.data.title}
+                    description={entry.data.description}
+                    pubDate={entry.data.pubDate}
+                    author={entry.data.author}
+                    image={entry.data.image}
+                    category={entry.data.category}
+                    tags={entry.data.tags}
+                >
+                    <slot />
+                </BlogLayout>
+
+                {
+                    readingTime && (
+                        <div class="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-foreground opacity-60">
+                            <p>Estimated reading time: {readingTime} min</p>
+                        </div>
+                    )
+                }
+            </div>
+        </SiteWrapper>
+        <CookieConsent language={site?.language} />
+    </body>
+</html>

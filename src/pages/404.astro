@@ -1,0 +1,138 @@
+---
+import { fetchSiteData } from "../services/api";
+import CookieConsent from "../components/CookieConsent.astro";
+import ThemeScript from "../components/ThemeScript.astro";
+import Plausible from "../components/Plausible.astro";
+import { getFontLinkId, getFontUrl, getStyleGuideFonts, resolveActiveThemeName } from "@lumegem/shared";
+import { renderThemeCss } from "@lumegem/lumegem-components";
+import "../index.css";
+
+let site = null;
+try {
+    site = await fetchSiteData();
+} catch (e) {
+    console.warn("Failed to fetch site data for 404 page, using defaults:", e);
+}
+
+
+const conceptsById = new Map<string, any>();
+for (const concept of [...(site?.mountableConcepts || []), ...(site?.concepts || [])]) {
+    if (concept?.id && concept?.slug) {
+        conceptsById.set(concept.id, concept);
+    }
+}
+const concepts = Array.from(conceptsById.values());
+const activeThemeName = resolveActiveThemeName(site?.styleGuide);
+const themeFonts = getStyleGuideFonts(site?.styleGuide).map((family) => ({
+    family,
+    href: getFontUrl(family),
+    id: getFontLinkId(family),
+}));
+/*
+ * Astryx CSS the page cannot get from a package: the token groups astryx.css leaves
+ * undeclared, plus an uploaded theme's generated stylesheet.
+ */
+const themeCss = renderThemeCss(site?.styleGuide);
+---
+
+<html lang={site?.language || "en"} data-astryx-theme={activeThemeName}>
+    <head>
+        {
+            site?.hasSelfHostedFonts || site?.localFontsCss ? (
+                <link
+                    rel="stylesheet"
+                    href={`${import.meta.env.BASE_URL}fonts.css`}
+                />
+            ) : (
+                <>
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.googleapis.com"
+                    />
+                    <link
+                        rel="preconnect"
+                        href="https://fonts.gstatic.com"
+                        crossorigin
+                    />
+                    { themeFonts.map(({ id, href }) => (<link id={id} href={href} rel="stylesheet" />)) }
+                </>
+            )
+        }
+        <style is:inline set:html={themeCss} />
+        <script is:inline define:vars={{ concepts, baseUrl: import.meta.env.BASE_URL }}>
+            (function() {
+                const base = baseUrl.replace(/\/$/, "");
+                const getCleanPath = function(pathname) {
+                    let relativePath = pathname;
+                    if (base && relativePath.startsWith(base)) {
+                        relativePath = relativePath.slice(base.length);
+                    }
+                    return relativePath.replace(/^\/+|\/+$/g, '');
+                };
+
+                let cleanPath = getCleanPath(window.location.pathname);
+                if (cleanPath === '404.html' && document.referrer) {
+                    try {
+                        const referrer = new URL(document.referrer);
+                        if (referrer.origin === window.location.origin) {
+                            cleanPath = getCleanPath(referrer.pathname);
+                        }
+                    } catch {}
+                }
+                
+                // Prevent infinite redirect loops if we are already requesting a 404 page
+                if (cleanPath === '404-page' || cleanPath.endsWith('/404-page') || cleanPath.endsWith('/404-page/') || cleanPath.endsWith('/404.html')) {
+                    return;
+                }
+                
+                const segments = cleanPath.split('/');
+                const firstSegment = segments[0];
+                
+                // Find if the first segment is a known concept slug
+                const concept = concepts.find(c => c.slug && c.slug.replace(/^\/+|\/+$/g, '') === firstSegment);
+                if (concept) {
+                    const conceptSlug = concept.slug.replace(/^\/+|\/+$/g, '');
+                    window.location.replace(`${base}/${conceptSlug}/404-page`);
+                } else {
+                    window.location.replace(`${base}/404-page`);
+                }
+            })();
+        </script>
+        <ThemeScript />
+        <Plausible />
+
+        <title>404 - Page Not Found</title>
+        <meta name="viewport" content="width=device-width" />
+        {
+            site?.icon ? (
+                // If it's a URL or path, use it directly
+                site.icon.includes("/") ||
+                site.icon.startsWith("http") ||
+                site.icon.startsWith("data:") ? (
+                    <link rel="icon" href={site.icon} />
+                ) : (
+                    // If it's an emoji (or short string), render as SVG data URI
+                    <link
+                        rel="icon"
+                        href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${site.icon}</text></svg>`}
+                    />
+                )
+            ) : (
+                <link
+                    rel="icon"
+                    href={`${import.meta.env.BASE_URL}favicon.svg`}
+                />
+            )
+        }
+    </head>
+    <body
+        class="flex items-center justify-center h-screen bg-gray-100 text-gray-800"
+    >
+        <div class="text-center">
+            <h1 class="text-4xl font-bold mb-4">404</h1>
+            <p class="mb-4">Page not found</p>
+            <a href="/" class="text-blue-500 hover:underline">Go Home</a>
+        </div>
+        <CookieConsent language={site?.language} />
+    </body>
+</html>

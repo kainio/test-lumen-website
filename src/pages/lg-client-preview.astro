@@ -1,0 +1,340 @@
+---
+import { fetchSiteData } from "../services/api";
+import CookieConsent from "../components/CookieConsent.astro";
+import Plausible from "../components/Plausible.astro";
+import "../index.css";
+
+// Case-insensitive URL param lookup
+const getParam = (name: string): string | undefined => {
+    const lower = name.toLowerCase();
+    for (const [key, val] of Astro.url.searchParams.entries()) {
+        if (key.toLowerCase() === lower) return val || undefined;
+    }
+    return undefined;
+};
+
+// 1. Fetch site data
+let siteData: any = {};
+try {
+    const projectId = getParam("projectId");
+    siteData = await fetchSiteData(undefined, projectId);
+} catch (e) {
+    console.warn("Failed to fetch site data for lg-client-preview page, using empty default:", e);
+}
+const settings = siteData?.settings || {};
+const concepts = siteData?.concepts || [];
+
+// 2. Check for access
+if (!settings.enableClientPreview) {
+    return Astro.redirect("/");
+}
+
+// 3. Filter concepts
+const previewConcepts = concepts.filter((c: any) => c.isInPreview);
+
+if (previewConcepts.length === 0) {
+    // If enabled but no concepts selected, show a friendly message or redirect
+    // For now, let's show the page but empty state
+}
+
+const defaultConceptId = settings.defaultConceptId;
+
+const getConceptUrl = (concept: any) => {
+    const isDefault = concept.id === settings.defaultConceptId;
+    const isStatic = process.env.BUILD_MODE === "static";
+
+    // If not static build (e.g. site preview), force root URL
+    // Otherwise use the configured BASE_URL (e.g. /lumeDemo/)
+    let baseUrl = isStatic ? import.meta.env.BASE_URL : "/";
+
+    // Normalize baseUrl to remove trailing slash for consistent appending
+    if (baseUrl.endsWith("/") && baseUrl.length > 1) {
+        baseUrl = baseUrl.slice(0, -1);
+    }
+
+    if (isDefault) {
+        return baseUrl;
+    }
+
+    // Other concepts use their specific slug if available
+    if (concept.slug) {
+        // Ensure slug has leading slash
+        const slug = concept.slug.startsWith("/")
+            ? concept.slug
+            : `/${concept.slug}`;
+        // If baseUrl is "/" (and we removed it above or it's root), handle carefully
+        if (baseUrl === "/") {
+            return slug;
+        }
+        return `${baseUrl}${slug}`;
+    }
+
+    // Fallback for non-default concepts without slugs
+    return "#";
+};
+
+const lang = getParam("lang") || siteData.language || "en";
+
+// Define local translations for this special preview page
+const translations: Record<string, any> = {
+    en: {
+        title: "Concept Preview",
+        description: "Compare different design concepts side by side.",
+        share: "Share",
+        copied: "Link copied to clipboard!",
+        noConcepts: "No concepts are currently marked for preview.",
+        conceptLabel: "Concept",
+        openFullSite: "Open Full Site",
+        selectLanguage: "Select Language",
+    },
+    fr: {
+        title: "Aperçu des Concepts",
+        description: "Comparez différents concepts de design côte à côte.",
+        share: "Partager",
+        copied: "Lien copié dans le presse-papier !",
+        noConcepts: "Aucun concept n'est actuellement marqué pour l'aperçu.",
+        conceptLabel: "Concept",
+        openFullSite: "Ouvrir le Site Complet",
+        selectLanguage: "Choisir la langue",
+    },
+    es: {
+        title: "Vista Previa de Conceptos",
+        description:
+            "Compara diferentes conceptos de diseño uno al lado del otro.",
+        share: "Compartir",
+        copied: "¡Enlace copiado al portapapeles!",
+        noConcepts: "No hay conceptos marcados para vista previa.",
+        conceptLabel: "Concepto",
+        openFullSite: "Abrir Sitio Completo",
+        selectLanguage: "Seleccionar idioma",
+    },
+    ar: {
+        title: "معاينة المفاهيم",
+        description: "قارن بين مفاهيم التصميم المختلفة جنباً إلى جنب.",
+        share: "مشاركة",
+        copied: "تم نسخ الرابط إلى الحافظة!",
+        noConcepts: "لا توجد مفاهيم محددة للمعاينة حالياً.",
+        conceptLabel: "المفهوم",
+        openFullSite: "فتح الموقع الكامل",
+        selectLanguage: "اختر اللغة",
+    },
+};
+
+const t = translations[lang] || translations.en;
+const isRtl = lang === "ar";
+---
+
+<html lang={lang} dir={isRtl ? "rtl" : "ltr"}>
+    <head>
+        <Plausible />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{t.title} - {siteData.title}</title>
+    </head>
+    <body class="bg-gray-50 min-h-screen text-gray-900 font-sans">
+        <div class="max-w-[1600px] mx-auto px-4 py-8">
+            <header
+                class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4"
+            >
+                <div class={isRtl ? "text-right" : "text-left"}>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900">
+                        {siteData.title}
+                        <span class="text-gray-400">/</span>
+                        {t.title}
+                    </h1>
+                    <p class="text-sm text-gray-500 mt-1">
+                        {t.description}
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    {/* Language Selection */}
+                    <div class="flex items-center gap-2">
+                        <label
+                            for="lang-select"
+                            class="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                            {t.selectLanguage}
+                        </label>
+                        <select
+                            id="lang-select"
+                            class="select select-bordered select-sm"
+                        >
+                            <option value="en" selected={lang === "en"}
+                                >English</option
+                            >
+                            <option value="fr" selected={lang === "fr"}
+                                >Français</option
+                            >
+                            <option value="es" selected={lang === "es"}
+                                >Español</option
+                            >
+                            <option value="ar" selected={lang === "ar"}
+                                >العربية</option
+                            >
+                        </select>
+                    </div>
+
+                    <button
+                        class="btn btn-sm btn-outline gap-2"
+                        onclick={`navigator.clipboard.writeText(window.location.href); alert('${t.copied}');`}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><path
+                                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                            ></path><path
+                                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                            ></path></svg
+                        >
+                        {t.share}
+                    </button>
+                </div>
+            </header>
+
+            {
+                previewConcepts.length === 0 ? (
+                    <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <p class="text-lg text-gray-500">{t.noConcepts}</p>
+                    </div>
+                ) : (
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {[0, 1, 2].map((slotIndex) => {
+                            // Determine initial concept for this slot
+                            // Loop through available preview concepts
+                            const initialConcept =
+                                previewConcepts[
+                                    slotIndex % previewConcepts.length
+                                ];
+                            const initialUrl = getConceptUrl(initialConcept);
+
+                            return (
+                                <article
+                                    class="flex flex-col gap-4"
+                                    id={`slot-${slotIndex}`}
+                                >
+                                    {/* Control Bar */}
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-200 flex items-center gap-3">
+                                        <div class="flex-1">
+                                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+                                                {t.conceptLabel} {slotIndex + 1}
+                                            </label>
+                                            <select
+                                                class="select select-bordered select-sm w-full"
+                                                onchange={`updateSlot(${slotIndex}, this.value)`}
+                                            >
+                                                {previewConcepts.map(
+                                                    (c: any) => (
+                                                        <option
+                                                            value={getConceptUrl(
+                                                                c,
+                                                            )}
+                                                            selected={
+                                                                c.id ===
+                                                                initialConcept.id
+                                                            }
+                                                        >
+                                                            {c.name}
+                                                        </option>
+                                                    ),
+                                                )}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    {/* Preview Card */}
+                                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col flex-1">
+                                        {/* Iframe Container */}
+                                        <div class="relative bg-gray-100 aspect-[9/10] border-b border-gray-100 overflow-hidden group">
+                                            <iframe
+                                                id={`iframe-${slotIndex}`}
+                                                src={initialUrl}
+                                                class="w-[200%] h-[200%] border-0 absolute top-0 left-0 origin-top-left transform scale-[0.5]"
+                                                loading="lazy"
+                                                title={`${t.conceptLabel} ${slotIndex + 1}`}
+                                            />
+
+                                            {/* Hover Overlay with direct action */}
+                                            <div class="absolute inset-0 pointer-events-none group-hover:bg-black/5 transition-colors duration-200" />
+                                        </div>
+
+                                        {/* Details Footer */}
+                                        <div class="p-4 bg-white border-t border-gray-100">
+                                            <div class="flex justify-between items-center">
+                                                <a
+                                                    id={`link-${slotIndex}`}
+                                                    href={initialUrl}
+                                                    target="_blank"
+                                                    class="btn btn-primary btn-sm w-full gap-2"
+                                                >
+                                                    {t.openFullSite}
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="14"
+                                                        height="14"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                    >
+                                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                                        <polyline points="15 3 21 3 21 9" />
+                                                        <line
+                                                            x1="10"
+                                                            y1="14"
+                                                            x2="21"
+                                                            y2="3"
+                                                        />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            );
+                        })}
+                    </div>
+                )
+            }
+
+            <footer class="mt-12 text-center text-sm text-gray-400">
+                &copy; {new Date().getFullYear()}
+                {siteData.title}.
+            </footer>
+        </div>
+
+        <script is:inline define:vars={{ previewConcepts }}>
+            // Make concepts available globally or just use data attributes
+            // Actually, we can just use the value from the select to update the iframe
+
+            window.updateSlot = (slotIndex, url) => {
+                const iframe = document.getElementById(`iframe-${slotIndex}`);
+                const link = document.getElementById(`link-${slotIndex}`);
+
+                if (iframe) iframe.src = url;
+                if (link) link.href = url;
+            };
+
+            // Language switching logic
+            const langSelect = document.getElementById("lang-select");
+            if (langSelect) {
+                langSelect.addEventListener("change", (e) => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("lang", e.target.value);
+                    window.location.href = url.toString();
+                });
+            }
+        </script>
+        <CookieConsent language={lang} />
+    </body>
+</html>

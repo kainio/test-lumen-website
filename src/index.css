@@ -1,0 +1,50 @@
+/* Declares the cascade layer order before any other sheet can. Keep this import first. */
+@import "@lumegem/lumegem-components/astryx-layers.css";
+
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/core/tailwind-theme.css";
+
+/* Fixes for astryx CSS gaps a theme's tokens expose. */
+@import "@lumegem/lumegem-components/astryx-patches.css";
+
+@import "@astryxdesign/theme-neutral/theme.css";
+@import "@astryxdesign/theme-butter/theme.css";
+@import "@astryxdesign/theme-chocolate/theme.css";
+@import "@astryxdesign/theme-gothic/theme.css";
+@import "@astryxdesign/theme-matcha/theme.css";
+@import "@astryxdesign/theme-stone/theme.css";
+@import "@astryxdesign/theme-y2k/theme.css";
+
+@import "./themes/index.css";
+
+/* Scan the section library for utility usage. */
+@source "../../../packages/lumegem-components/src";
+/* packages/shared/src holds the literal grid-cols-N lookup table that layout-options.ts
+   resolves to. Tailwind scans source text, so without this the classes reach the DOM and
+   never the CSS, and every Layout grid silently collapses to one column. */
+@source "../../../packages/shared/src";
+
+/*
+  No flash of the wrong colour mode on first load.
+
+  `ThemeScript` resolves the visitor's stored choice onto `<html data-theme>` before first
+  paint. Astryx's `<Theme>` renders a wrapper div that also declares `color-scheme`, and
+  server-side it can only guess `system` — localStorage is unreadable there, and a static
+  export has no server at all. That guess would otherwise override `<html>` for the entire
+  subtree, so the page paints in the OS's mode and then snaps to the user's on hydration.
+
+  When `<html>` states a mode explicitly, it wins. Scoped to astryx theme wrappers (rather
+  than `*`) and to this app only, so nested `<Theme>` islands elsewhere keep their override.
+*/
+html[data-theme="light"] [data-astryx-theme] {
+    color-scheme: light;
+}
+
+html[data-theme="dark"] [data-astryx-theme] {
+    color-scheme: dark;
+}
