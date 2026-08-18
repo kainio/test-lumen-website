@@ -1,3 +1,2 @@
 # Concept-aware 404 fallbacks for static hosts that support _redirects.
-/en/* /en/404-page 302
 /* /404-page 302
