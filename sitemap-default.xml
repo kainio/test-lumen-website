@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kainio.github.io/luminio/</loc>
+    <loc>https://kainio.github.io/test-lumen-website/</loc>
     <lastmod>2026-08-18</lastmod>
   </url>
   <url>
-    <loc>https://kainio.github.io/luminio/about/</loc>
+    <loc>https://kainio.github.io/test-lumen-website/about/</loc>
     <lastmod>2026-08-18</lastmod>
   </url>
   <url>
-    <loc>https://kainio.github.io/luminio/404-page/</loc>
+    <loc>https://kainio.github.io/test-lumen-website/404-page/</loc>
     <lastmod>2026-08-18</lastmod>
   </url>
 </urlset>
