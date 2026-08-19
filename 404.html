@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" data-astryx-theme="neutral"><head><link rel="stylesheet" href="/test-lumen-website/fonts.css"><style>@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+<!DOCTYPE html><html lang="en" data-astryx-theme="chocolate-copy"><head><link rel="stylesheet" href="/test-lumen-websitefonts.css"><style>@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
 
 @layer astryx-base {
   :root {
@@ -78,8 +78,299 @@
       --color-syntax-background: var(--color-background-muted);
     }
   }
+}
+
+@layer reset {
+@scope ([data-astryx-theme="chocolate-copy"]) to ([data-astryx-theme]) {
+  :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-family-heading);
+    color: var(--color-text-primary);
+  }
+
+  :where(h1) {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.3333;
+  }
+
+  :where(h2) {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.4;
+  }
+
+  :where(h3) {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.4118;
+  }
+
+  :where(h4) {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.4286;
+  }
+
+  :where(h5) {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.6667;
+  }
+
+  :where(h6) {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.6;
+  }
+
+  :where(p) {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.4286;
+    color: var(--color-text-primary);
+  }
+
+  :where(small) {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.6667;
+    color: var(--color-text-secondary);
+  }
+
+  :where(code, pre) {
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-base);
+    line-height: 1.4286;
+  }
+
+  :where(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+  }
+}
+}
+
+@layer astryx-theme {
+@scope ([data-astryx-theme="chocolate-copy"]) to ([data-astryx-theme]) {
+  :scope {
+    --color-accent: light-dark(#00AA66, #d4a06a);
+    --color-accent-muted: light-dark(#8C592714, #d4a06a20);
+    --color-on-accent: light-dark(#FFFFFF, #4a3520);
+    --color-neutral: light-dark(#8C59270F, #EDE4D41A);
+    --color-background-surface: light-dark(#FFFCF7, #1c1610);
+    --color-background-body: light-dark(#FFFCF7, #141010);
+    --color-overlay: light-dark(#4a352080, #140e0aCC);
+    --color-overlay-hover: light-dark(#4a35200D, #EDE4D40D);
+    --color-overlay-pressed: light-dark(#4a35201A, #EDE4D41A);
+    --color-background-muted: light-dark(#EDE4D4, #2a2018);
+    --color-text-primary: light-dark(#4a3520, #EDE4D4);
+    --color-text-secondary: light-dark(#B88859, #c4a882);
+    --color-text-disabled: light-dark(#C4AC95, #6b5540);
+    --color-text-accent: light-dark(#8C5927, #d4a06a);
+    --color-on-dark: #FFFCF7;
+    --color-on-light: #4a3520;
+    --color-icon-accent: light-dark(#8C5927, #d4a06a);
+    --color-icon-primary: light-dark(#4a3520, #EDE4D4);
+    --color-icon-secondary: light-dark(#B88859, #c4a882);
+    --color-icon-disabled: light-dark(#C4AC95, #6b5540);
+    --color-background-card: light-dark(#EDE4D4, #2a2018);
+    --color-background-popover: light-dark(#FFFCF7, #2a2018);
+    --color-background-inverted: light-dark(#4a3520, #EDE4D4);
+    --color-background-error-inverted: light-dark(#AA071E, #E3193B);
+    --color-success: light-dark(#709900, #96bf2a);
+    --color-success-muted: light-dark(#70990020, #96bf2a20);
+    --color-on-success: light-dark(#FFFFFF, #4a3520);
+    --color-error: light-dark(#FD0000, #ff5c5c);
+    --color-error-muted: light-dark(#FD000020, #ff5c5c20);
+    --color-on-error: light-dark(#FFFFFF, #4a3520);
+    --color-warning: light-dark(#FFB600, #ffc940);
+    --color-warning-muted: light-dark(#FFB60020, #ffc94020);
+    --color-on-warning: light-dark(#4a3520, #4a3520);
+    --color-border: light-dark(#C4AC95, #EDE4D41A);
+    --color-border-emphasized: light-dark(#B88859, #6b5540);
+    --color-skeleton: light-dark(#C4AC95, #6b5540);
+    --color-track: light-dark(#CCD3DB, #5A5E66);
+    --color-shadow: light-dark(#4a35201A, #0000004D);
+    --color-tint-hover: light-dark(black, white);
+    --color-background-blue: light-dark(#3a5e8c33, #3a5e8c33);
+    --color-border-blue: light-dark(#3a5e8c, #7ba8d4);
+    --color-icon-blue: light-dark(#3a5e8c, #7ba8d4);
+    --color-text-blue: light-dark(#2e4a6e, #8dbce0);
+    --color-background-cyan: light-dark(#3a7c7c33, #3a7c7c33);
+    --color-border-cyan: light-dark(#3a7c7c, #70c4c4);
+    --color-icon-cyan: light-dark(#3a7c7c, #70c4c4);
+    --color-text-cyan: light-dark(#2e6060, #82d4d4);
+    --color-background-gray: light-dark(#B8885933, #6b554033);
+    --color-border-gray: light-dark(#B88859, #B88859);
+    --color-icon-gray: light-dark(#B88859, #c4a882);
+    --color-text-gray: light-dark(#4a3520, #EDE4D4);
+    --color-background-green: light-dark(#70990033, #96bf2a33);
+    --color-border-green: light-dark(#709900, #96bf2a);
+    --color-icon-green: light-dark(#709900, #96bf2a);
+    --color-text-green: light-dark(#5a7a00, #a8d43a);
+    --color-background-orange: light-dark(#c4762033, #d4903a33);
+    --color-border-orange: light-dark(#c47620, #d4903a);
+    --color-icon-orange: light-dark(#c47620, #d4903a);
+    --color-text-orange: light-dark(#a06018, #e0a04a);
+    --color-background-pink: light-dark(#c44a7033, #e07a9a33);
+    --color-border-pink: light-dark(#c44a70, #e07a9a);
+    --color-icon-pink: light-dark(#c44a70, #e07a9a);
+    --color-text-pink: light-dark(#a03a5a, #f08aaa);
+    --color-background-purple: light-dark(#6b4a8c33, #b08ed433);
+    --color-border-purple: light-dark(#6b4a8c, #b08ed4);
+    --color-icon-purple: light-dark(#6b4a8c, #b08ed4);
+    --color-text-purple: light-dark(#553a70, #c0a0e0);
+    --color-background-red: light-dark(#FD000033, #ff5c5c33);
+    --color-border-red: light-dark(#FD0000, #ff5c5c);
+    --color-icon-red: light-dark(#FD0000, #ff5c5c);
+    --color-text-red: light-dark(#cc0000, #ff7a7a);
+    --color-background-teal: light-dark(#2e6b5a33, #5ab89833);
+    --color-border-teal: light-dark(#2e6b5a, #5ab898);
+    --color-icon-teal: light-dark(#2e6b5a, #5ab898);
+    --color-text-teal: light-dark(#245546, #6ccaaa);
+    --color-background-yellow: light-dark(#FFB60033, #ffc94033);
+    --color-border-yellow: light-dark(#FFB600, #ffc940);
+    --color-icon-yellow: light-dark(#FFB600, #ffc940);
+    --color-text-yellow: light-dark(#cc9200, #ffd960);
+    --spacing-0: 0px;
+    --spacing-0-5: 2px;
+    --spacing-1: 4px;
+    --spacing-1-5: 6px;
+    --spacing-2: 8px;
+    --spacing-3: 12px;
+    --spacing-4: 16px;
+    --spacing-5: 20px;
+    --spacing-6: 24px;
+    --spacing-7: 28px;
+    --spacing-8: 32px;
+    --spacing-9: 36px;
+    --spacing-10: 40px;
+    --spacing-11: 44px;
+    --spacing-12: 48px;
+    --radius-none: 0px;
+    --radius-inner: 0.375rem;
+    --radius-element: 0.625rem;
+    --radius-container: 0.75rem;
+    --radius-page: 1.5rem;
+    --radius-chat: 28px;
+    --radius-full: 9999px;
+    --font-family-body: "Albert Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-family-code: "JetBrains Mono", "SF Mono", Monaco, Consolas, monospace;
+    --font-family-heading: Fraunces, Georgia, "Times New Roman", Times, serif;
+    --font-size-4xs: 0.375rem;
+    --font-size-3xs: 0.4375rem;
+    --font-size-2xs: 0.5rem;
+    --font-size-xs: 0.625rem;
+    --font-size-sm: 0.75rem;
+    --font-size-base: 0.875rem;
+    --font-size-lg: 1.0625rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.8125rem;
+    --font-size-4xl: 2.1875rem;
+    --font-size-5xl: 2.625rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --text-heading-1-size: var(--font-size-2xl);
+    --text-heading-1-weight: var(--font-weight-semibold);
+    --text-heading-1-leading: 1.3333;
+    --text-heading-2-size: var(--font-size-xl);
+    --text-heading-2-weight: var(--font-weight-semibold);
+    --text-heading-2-leading: 1.4;
+    --text-heading-3-size: var(--font-size-lg);
+    --text-heading-3-weight: var(--font-weight-bold);
+    --text-heading-3-leading: 1.4118;
+    --text-heading-4-size: var(--font-size-base);
+    --text-heading-4-weight: var(--font-weight-bold);
+    --text-heading-4-leading: 1.4286;
+    --text-heading-5-size: var(--font-size-sm);
+    --text-heading-5-weight: var(--font-weight-semibold);
+    --text-heading-5-leading: 1.6667;
+    --text-heading-6-size: var(--font-size-xs);
+    --text-heading-6-weight: var(--font-weight-semibold);
+    --text-heading-6-leading: 1.6;
+    --text-body-size: var(--font-size-base);
+    --text-body-weight: var(--font-weight-normal);
+    --text-body-leading: 1.4286;
+    --text-large-size: var(--font-size-lg);
+    --text-large-weight: var(--font-weight-semibold);
+    --text-large-leading: 1.4118;
+    --text-label-size: var(--font-size-base);
+    --text-label-weight: var(--font-weight-medium);
+    --text-label-leading: 1.4286;
+    --text-code-size: var(--font-size-base);
+    --text-code-weight: var(--font-weight-normal);
+    --text-code-leading: 1.4286;
+    --text-supporting-size: var(--font-size-sm);
+    --text-supporting-weight: var(--font-weight-normal);
+    --text-supporting-leading: 1.6667;
+    --text-display-1-size: var(--font-size-5xl);
+    --text-display-1-weight: var(--font-weight-normal);
+    --text-display-1-leading: 1.2381;
+    --text-display-2-size: var(--font-size-4xl);
+    --text-display-2-weight: var(--font-weight-normal);
+    --text-display-2-leading: 1.2571;
+    --text-display-3-size: var(--font-size-3xl);
+    --text-display-3-weight: var(--font-weight-normal);
+    --text-display-3-leading: 1.3793;
+    --size-element-sm: 28px;
+    --size-element-md: 32px;
+    --size-element-lg: 36px;
+    --shadow-low: 0 2px 4px #4a35200D, 0 4px 8px #4a35201A;
+    --shadow-med: 0 2px 4px #4a35200D, 0 4px 12px #4a35201A;
+    --shadow-high: 0 4px 6px #4a35201A, 0 12px 24px #4a352026;
+    --shadow-inset-hover: inset 0px 0px 0px 2px #8C592730;
+    --shadow-inset-selected: inset 0px 0px 0px 2px #8C592750;
+    --shadow-inset-success: inset 0px 0px 0px 2px #70990050;
+    --shadow-inset-warning: inset 0px 0px 0px 2px #FFB60050;
+    --shadow-inset-error: inset 0px 0px 0px 2px #FD000050;
+    --duration-fast-min: 95ms;
+    --duration-fast: 125ms;
+    --duration-fast-max: 165ms;
+    --duration-medium-min: 225ms;
+    --duration-medium: 300ms;
+    --duration-medium-max: 400ms;
+    --duration-slow-min: 525ms;
+    --duration-slow: 700ms;
+    --duration-slow-max: 935ms;
+    --ease-standard: cubic-bezier(0.24, 1, 0.4, 1);
+    --color-syntax-keyword: light-dark(#8C5927, #d4a06a);
+    --color-syntax-string: light-dark(#2e6b4a, #7bc49e);
+    --color-syntax-comment: light-dark(#B88859, #B88859);
+    --color-syntax-number: light-dark(#a06018, #d4b870);
+    --color-syntax-function: light-dark(#3a5e8c, #7ba8d4);
+    --color-syntax-type: light-dark(#6b4a8c, #b08ed4);
+    --color-syntax-variable: light-dark(#4a3520, #EDE4D4);
+    --color-syntax-operator: light-dark(#B88859, #c4a882);
+    --color-syntax-constant: light-dark(#a06018, #d4b870);
+    --color-syntax-tag: light-dark(#8c3a3a, #d47a7a);
+    --color-syntax-attribute: light-dark(#8C5927, #d4a06a);
+    --color-syntax-property: light-dark(#3a7c6b, #70c4b0);
+    --color-syntax-punctuation: light-dark(#B88859, #6b5540);
+    --color-syntax-background: light-dark(#FFFCF7, #1c1610);
+  }
+}
+
+@scope ([data-astryx-theme="chocolate-copy"]) to ([data-astryx-theme]) {
+  [data-astryx-media="dark"] {
+    color-scheme: dark;
+    --color-text-primary: var(--color-on-dark);
+    --color-icon-primary: var(--color-on-dark);
+    --color-accent: var(--color-on-dark);
+  }
+
+  [data-astryx-media="light"] {
+    color-scheme: light;
+    --color-text-primary: var(--color-on-light);
+    --color-icon-primary: var(--color-on-light);
+    --color-accent: var(--color-on-light);
+  }
+}
 }</style><script>(function(){const concepts = [];
-const baseUrl = "/test-lumen-website/";
+const baseUrl = "/test-lumen-website";
 
             (function() {
                 const base = baseUrl.replace(/\/$/, "");
@@ -130,5 +421,5 @@ const baseUrl = "/test-lumen-website/";
             document.documentElement.removeAttribute("data-theme");
         }
     })();
-})();</script><title>404 - Page Not Found</title><meta name="viewport" content="width=device-width"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>"><link rel="stylesheet" href="/test-lumen-website/_astro/Plausible.CWjpmoGn.css"><script>!(function(w,p,f,c){if(!window.crossOriginIsolated && !navigator.serviceWorker) return;c=w[p]=Object.assign(w[p]||{},{"lib":"/test-lumen-website/~partytown/","debug":false});c[f]=(c[f]||[]).concat(["dataLayer.push","gtag"])})(window,'partytown','forward');/* Partytown 0.13.2 - MIT QwikDev */
-const t={preserveBehavior:!1},e=e=>{if("string"==typeof e)return[e,t];const[n,r=t]=e;return[n,{...t,...r}]},n=Object.freeze((t=>{const e=new Set;let n=[];do{Object.getOwnPropertyNames(n).forEach((t=>{"function"==typeof n[t]&&e.add(t)}))}while((n=Object.getPrototypeOf(n))!==Object.prototype);return Array.from(e)})());!function(t,r,o,i,a,s,c,l,d,p,u=t,f){function h(){f||(f=1,"/"==(c=(s.lib||"/~partytown/")+(s.debug?"debug/":""))[0]&&(d=r.querySelectorAll('script[type="text/partytown"]'),i!=t?i.dispatchEvent(new CustomEvent("pt1",{detail:t})):(l=setTimeout(v,(null==s?void 0:s.fallbackTimeout)||1e4),r.addEventListener("pt0",w),a?y(1):o.serviceWorker?o.serviceWorker.register(c+(s.swPath||"partytown-sw.js"),{scope:c}).then((function(t){t.active?y():t.installing&&t.installing.addEventListener("statechange",(function(t){"activated"==t.target.state&&y()}))}),console.error):v())))}function y(e){p=r.createElement(e?"script":"iframe"),t._pttab=Date.now(),e||(p.style.display="block",p.style.width="0",p.style.height="0",p.style.border="0",p.style.visibility="hidden",p.setAttribute("aria-hidden",!0)),p.src=c+"partytown-"+(e?"atomics.js?v=0.13.2":"sandbox-sw.html?"+t._pttab),r.querySelector(s.sandboxParent||"body").appendChild(p)}function v(n,o){for(w(),i==t&&(s.forward||[]).map((function(n){const[r]=e(n);delete t[r.split(".")[0]]})),n=0;n<d.length;n++)(o=r.createElement("script")).innerHTML=d[n].innerHTML,o.nonce=s.nonce,r.head.appendChild(o);p&&p.parentNode.removeChild(p)}function w(){clearTimeout(l)}s=t.partytown||{},i==t&&(s.forward||[]).map((function(r){const[o,{preserveBehavior:i}]=e(r);u=t,o.split(".").map((function(e,r,o){var a;u=u[o[r]]=r+1<o.length?u[o[r]]||(a=o[r+1],n.includes(a)?[]:{}):(()=>{let e=null;if(i){const{methodOrProperty:n,thisObject:r}=((t,e)=>{let n=t;for(let t=0;t<e.length-1;t+=1)n=n[e[t]];return{thisObject:n,methodOrProperty:e.length>0?n[e[e.length-1]]:void 0}})(t,o);"function"==typeof n&&(e=(...t)=>n.apply(r,...t))}return function(){let n;return e&&(n=e(arguments)),(t._ptf=t._ptf||[]).push(o,arguments),n}})()}))})),"complete"==r.readyState?h():(t.addEventListener("DOMContentLoaded",h),t.addEventListener("load",h))}(window,document,navigator,top,window.crossOriginIsolated);;(e=>{e.addEventListener("astro:before-swap",e=>{let r=document.body.querySelector("iframe[src*='/test-lumen-website/~partytown/']");if(r)e.newDocument.body.append(r)})})(document);</script></head><body class="flex items-center justify-center h-screen bg-gray-100 text-gray-800"><div class="text-center"><h1 class="text-4xl font-bold mb-4">404</h1><p class="mb-4">Page not found</p><a href="/test-lumen-website/" class="text-blue-500 hover:underline">Go Home</a></div><div id="cookie-consent-config" data-language="en" data-ga-enabled="false" data-ga-id data-privacy-url="/test-lumen-website/legal/privacy-notice" data-terms-url="/test-lumen-website/legal/terms-of-use"></div><script type="module" src="/test-lumen-website/_astro/CookieConsent.astro_astro_type_script_index_0_lang.C28t-nTc.js"></script></body></html>
+})();</script><title>404 - Page Not Found</title><meta name="viewport" content="width=device-width"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>"><link rel="stylesheet" href="/test-lumen-website/_astro/Plausible.CoXdukyA.css"><script>!(function(w,p,f,c){if(!window.crossOriginIsolated && !navigator.serviceWorker) return;c=w[p]=Object.assign(w[p]||{},{"lib":"/test-lumen-website/~partytown/","debug":false});c[f]=(c[f]||[]).concat(["dataLayer.push","gtag"])})(window,'partytown','forward');/* Partytown 0.13.2 - MIT QwikDev */
+const t={preserveBehavior:!1},e=e=>{if("string"==typeof e)return[e,t];const[n,r=t]=e;return[n,{...t,...r}]},n=Object.freeze((t=>{const e=new Set;let n=[];do{Object.getOwnPropertyNames(n).forEach((t=>{"function"==typeof n[t]&&e.add(t)}))}while((n=Object.getPrototypeOf(n))!==Object.prototype);return Array.from(e)})());!function(t,r,o,i,a,s,c,l,d,p,u=t,f){function h(){f||(f=1,"/"==(c=(s.lib||"/~partytown/")+(s.debug?"debug/":""))[0]&&(d=r.querySelectorAll('script[type="text/partytown"]'),i!=t?i.dispatchEvent(new CustomEvent("pt1",{detail:t})):(l=setTimeout(v,(null==s?void 0:s.fallbackTimeout)||1e4),r.addEventListener("pt0",w),a?y(1):o.serviceWorker?o.serviceWorker.register(c+(s.swPath||"partytown-sw.js"),{scope:c}).then((function(t){t.active?y():t.installing&&t.installing.addEventListener("statechange",(function(t){"activated"==t.target.state&&y()}))}),console.error):v())))}function y(e){p=r.createElement(e?"script":"iframe"),t._pttab=Date.now(),e||(p.style.display="block",p.style.width="0",p.style.height="0",p.style.border="0",p.style.visibility="hidden",p.setAttribute("aria-hidden",!0)),p.src=c+"partytown-"+(e?"atomics.js?v=0.13.2":"sandbox-sw.html?"+t._pttab),r.querySelector(s.sandboxParent||"body").appendChild(p)}function v(n,o){for(w(),i==t&&(s.forward||[]).map((function(n){const[r]=e(n);delete t[r.split(".")[0]]})),n=0;n<d.length;n++)(o=r.createElement("script")).innerHTML=d[n].innerHTML,o.nonce=s.nonce,r.head.appendChild(o);p&&p.parentNode.removeChild(p)}function w(){clearTimeout(l)}s=t.partytown||{},i==t&&(s.forward||[]).map((function(r){const[o,{preserveBehavior:i}]=e(r);u=t,o.split(".").map((function(e,r,o){var a;u=u[o[r]]=r+1<o.length?u[o[r]]||(a=o[r+1],n.includes(a)?[]:{}):(()=>{let e=null;if(i){const{methodOrProperty:n,thisObject:r}=((t,e)=>{let n=t;for(let t=0;t<e.length-1;t+=1)n=n[e[t]];return{thisObject:n,methodOrProperty:e.length>0?n[e[e.length-1]]:void 0}})(t,o);"function"==typeof n&&(e=(...t)=>n.apply(r,...t))}return function(){let n;return e&&(n=e(arguments)),(t._ptf=t._ptf||[]).push(o,arguments),n}})()}))})),"complete"==r.readyState?h():(t.addEventListener("DOMContentLoaded",h),t.addEventListener("load",h))}(window,document,navigator,top,window.crossOriginIsolated);;(e=>{e.addEventListener("astro:before-swap",e=>{let r=document.body.querySelector("iframe[src*='/test-lumen-website/~partytown/']");if(r)e.newDocument.body.append(r)})})(document);</script></head><body class="flex items-center justify-center h-screen bg-gray-100 text-gray-800"><div class="text-center"><h1 class="text-4xl font-bold mb-4">404</h1><p class="mb-4">Page not found</p><a href="/test-lumen-website" class="text-blue-500 hover:underline">Go Home</a></div><div id="cookie-consent-config" data-language="en" data-ga-enabled="false" data-ga-id data-privacy-url="/test-lumen-website/legal/privacy-notice" data-terms-url="/test-lumen-website/legal/terms-of-use"></div><script type="module" src="/test-lumen-website/_astro/CookieConsent.astro_astro_type_script_index_0_lang.C28t-nTc.js"></script></body></html>
