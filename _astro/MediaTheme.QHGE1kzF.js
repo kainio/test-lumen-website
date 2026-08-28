@@ -1,1 +1,0 @@
-import"./rolldown-runtime.B0Z9INg1.js";import{n as e}from"./react-dom.W-BiV3zv.js";import{c as t,p as n}from"./Tooltip.CbGHh6Am.js";e();var r=n();function i({mode:e,children:n}){return(0,r.jsx)(`div`,{[t(`media`)]:e,className:`xjp7ctv x1tgivj0`,children:n})}i.displayName=`MediaTheme`;export{i as t};
